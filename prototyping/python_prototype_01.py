@@ -11,7 +11,3 @@ def Force(m1,m2,r):
 def Distance(x1,y1,x2,y2):
     return {"r":sqrt((x2-x1)**2+(y2-y1)**2),
             "theta": degrees(atan2(y2-y1,x2-x1))}
-
-
-
-
