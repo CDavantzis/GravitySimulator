@@ -30,3 +30,26 @@ def Distance(x1,y1,x2,y2):
             "theta": degrees(atan2(y2-y1,x2-x1))}
     
 
+class Plane():
+	''' Plane Class '''
+	pass
+
+class Point():
+	''' Point Class'''
+	pass
+	
+class Vector():
+	''' Vector Class'''
+	pass
+
+class Body():
+	''' Body Object In N-body Simulation '''
+	pass
+
+
+
+
+
+
+
+
