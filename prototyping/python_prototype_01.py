@@ -22,6 +22,9 @@
 # http://astronomy.stackexchange.com/questions/7806/exercise-2d-orbital-mechanics-simulation-python
 # https://en.wikipedia.org/wiki/Celestial_mechanics
 # http://www.cs.cmu.edu/~scandal/alg/nbody.html
+# http://www.luc.edu/faculty/dslavsk/courses/phys301/classnotes/celestialmechanics.pdf
+# http://physics.princeton.edu/~fpretori/Nbody/intro.htm
+# https://en.wikipedia.org/wiki/Cartesian_coordinate_system
 from math import sqrt, atan2, degrees
 
 G = 6.674e-11
@@ -49,15 +52,11 @@ class Simulation():
 
 class Body():
 	''' Body Object In N-body Simulation '''
-	def __init__(self,mass,x,y,z,mu=None):
+	def __init__(self,mass,x,y,z):
 		self.__mass = mass
-		if mu: #for greater accuaracy of known standard gravitational paramenter
-			self.__std_grav_param = mu
-		else:
-			self.__std_grav_param = G*mass
 
 	m  = property(lambda self: self.__mass)
-	mu = property(lambda self: self.__std_grav_param)
+	mu = property(lambda self: G*self.mass)
 
 
 class TwoBodySimulation():
