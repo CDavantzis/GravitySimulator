@@ -13,9 +13,6 @@ def Distance(x1,y1,x2,y2):
     return {"r":sqrt((x2-x1)**2+(y2-y1)**2),
             "theta": degrees(atan2(y2-y1,x2-x1))}
 
-
-#Ref: http://physics.princeton.edu/~fpretori/Nbody/
-#Testing: https://phet.colorado.edu/sims/my-solar-system/my-solar-system_en.html
 class Body():
     def __init__(self,mass,Cx=0,Cy=0,Vx=0,Vy=0,Fx=0,Fy=0):
         self.mass = mass
@@ -29,16 +26,16 @@ class Body():
     def __repr__(self):
         return str((self.Cx,self.Cy))
 
-    def update(self,dt=100000):
+    def update(self,dt=.5):
         self.Vx += dt * self.Fx / self.mass
         self.Vy += dt * self.Fy / self.mass
         self.Cx += dt * self.Vx
         self.Cy += dt * self.Vy
-
+        self.zeroForces()
 
     def distanceTo(self, other):
-        dx = other.Cx-self.Cx
-        dy = other.Cy-self.Cy
+        dx = self.Cx-other.Cx
+        dy = self.Cy-other.Cy
         r  = sqrt(dx**2+dy**2)
         return dx, dy, r
 
@@ -59,31 +56,56 @@ class Simulation():
 
     def __str__(self):
         return str(self.bodies)
+
+class TwoBody(Simulation):
+    #https://en.wikipedia.org/wiki/Two-body_problem
+    #https://en.wikipedia.org/wiki/Gravitational_two-body_problem
+    #http://www.astro.cornell.edu/~berthoud/alpsat/chapter4a.html
+    #http://scienceworld.wolfram.com/physics/Two-BodyProblem.html
     def __addForces(self):
         n = len(self.bodies)
-        #for i,j in iter((i,j) for i in range(n) for j in range(n) if i != j):
-        #    self.bodies[i].addForces(self.bodies[j])
-        for i in range(n):
-            self.bodies[i].zeroForces()
-            for j in range(n):
-                if i != j:
-                    self.bodies[i].addForces(self.bodies[j])
-
-
-        #    self.bodies[i].addForces(self.bodies[j])
+        for i,j in iter((i,j) for i in range(n) for j in range(n) if i != j):
+            self.bodies[i].addForces(self.bodies[j])
 
     def step(self):
         self.__addForces()
         for body in self.bodies:
             body.update()
 
+class NBody_BruteForce(Simulation):
+    def __addForces(self):
+        n = len(self.bodies)
+        for i,j in iter((i,j) for i in range(n) for j in range(n) if i != j):
+            self.bodies[i].addForces(self.bodies[j])
 
-B1 = Body(200,0,0)
-B2 = Body(10,142,0,Vy=140)
+    def step(self):
+        self.__addForces()
+        for body in self.bodies:
+            body.update()
 
-sim = Simulation(B1,B2)
+class NBody_BarnesHut(Simulation):
+    pass
 
-for i in range(100):
-    print sim
-    sim.step()
+class NBody_Fastmultipole(Simulation):
+    pass
+
+class NBody_ParticalMesh(Simulation):
+    pass
+
+class NBody_P3M(Simulation):
+    pass
+
+class NBody_PMTree(Simulation):
+    pass
+
+class NBody_MeanField(Simulation):
+    pass 
+
+B1 = Body(2000,0,0)
+B2 = Body(10,100,0,Vx=0,Vy=14)
+
+
+
+
+
 
