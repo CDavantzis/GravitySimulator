@@ -1,5 +1,6 @@
 ''' Python Prototype To Outline How The C++ Code Will be Written '''
 from math import sqrt, atan2, degrees
+from itertools import permutations
 
 G = 6.674e-11
 
@@ -11,3 +12,78 @@ def Force(m1,m2,r):
 def Distance(x1,y1,x2,y2):
     return {"r":sqrt((x2-x1)**2+(y2-y1)**2),
             "theta": degrees(atan2(y2-y1,x2-x1))}
+
+
+#Ref: http://physics.princeton.edu/~fpretori/Nbody/
+#Testing: https://phet.colorado.edu/sims/my-solar-system/my-solar-system_en.html
+class Body():
+    def __init__(self,mass,Cx=0,Cy=0,Vx=0,Vy=0,Fx=0,Fy=0):
+        self.mass = mass
+        self.Cx = Cx
+        self.Cy = Cy
+        self.Vx = Vx 
+        self.Vy = Vy
+        self.Fx = Fx 
+        self.Fy = Vy
+    
+    def __repr__(self):
+        return str((self.Cx,self.Cy))
+
+    def update(self,dt=100000):
+        self.Vx += dt * self.Fx / self.mass
+        self.Vy += dt * self.Fy / self.mass
+        self.Cx += dt * self.Vx
+        self.Cy += dt * self.Vy
+
+
+    def distanceTo(self, other):
+        dx = other.Cx-self.Cx
+        dy = other.Cy-self.Cy
+        r  = sqrt(dx**2+dy**2)
+        return dx, dy, r
+
+    def zeroForces(self):
+        self.Fx = 0
+        self.Fy = 0
+
+    def addForces(self, other):
+        dx, dy, r = self.distanceTo(other)
+        F = G*self.mass*other.mass/(r**2)
+        self.Fx += F * dx / r
+        self.Fy += F * dy / r
+
+
+class Simulation():
+    def __init__(self,*bodies):
+        self.bodies = list(bodies)
+
+    def __str__(self):
+        return str(self.bodies)
+    def __addForces(self):
+        n = len(self.bodies)
+        #for i,j in iter((i,j) for i in range(n) for j in range(n) if i != j):
+        #    self.bodies[i].addForces(self.bodies[j])
+        for i in range(n):
+            self.bodies[i].zeroForces()
+            for j in range(n):
+                if i != j:
+                    self.bodies[i].addForces(self.bodies[j])
+
+
+        #    self.bodies[i].addForces(self.bodies[j])
+
+    def step(self):
+        self.__addForces()
+        for body in self.bodies:
+            body.update()
+
+
+B1 = Body(200,0,0)
+B2 = Body(10,142,0,Vy=140)
+
+sim = Simulation(B1,B2)
+
+for i in range(100):
+    print sim
+    sim.step()
+
