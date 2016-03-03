@@ -1,7 +1,6 @@
 ''' Python Prototype To Outline How The C++ Code Will be Written '''
 from math import sqrt, atan2, degrees
-from itertools import permutations
-
+from Vector import Vector2d
 G = 6.674e-11
 
 def Force(m1,m2,r):
