@@ -1,7 +1,6 @@
 import math
 import numbers
 
-
 class Vector2D:
     '''
     help from:
@@ -58,7 +57,7 @@ class Body():
 class Simulation():
     def __init__(self,*bodies):
         self.bodies = list(bodies)
-        
+
     def __str__(self):
         return str([[b.r.x,b.r.y] for b in self.bodies])
 
@@ -76,7 +75,6 @@ class BruteForce(Simulation):
             b.r += v*dt
             b.f.ZERO()
 
-
 b1 = Body(10,100,0)
 b2 = Body(100,0,90)
 sim = BruteForce(b1,b2)
@@ -84,4 +82,3 @@ sim = BruteForce(b1,b2)
 for i in range(100):
     print sim
     sim.step()
-
