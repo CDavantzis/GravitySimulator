@@ -56,17 +56,7 @@ class Simulation():
     def __str__(self):
         return str(self.bodies)
 
-class TwoBody(Simulation):
-    def __addForces(self):
-        n = len(self.bodies)
-        for i,j in iter((i,j) for i in range(n) for j in range(n) if i != j):
-            self.bodies[i].addForces(self.bodies[j])
-
-    def step(self):
-        self.__addForces()
-        for body in self.bodies:
-            body.update()
-
+# Help From: http://physics.princeton.edu/~fpretori/Nbody/
 class BruteForce(Simulation):
     def __addForces(self):
         n = len(self.bodies)
@@ -89,7 +79,6 @@ sim = BruteForce(b1,b2)
 for i in range(100):
     print (sim.bodies[0].Cx, sim.bodies[0].Cy),(sim.bodies[1].Cx, sim.bodies[1].Cy)
     sim.step()
-
 
 
 
