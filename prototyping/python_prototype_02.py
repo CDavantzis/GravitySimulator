@@ -52,10 +52,15 @@ class Body():
     _f_from = lambda self, other: (self.r-other.r)*((self.G*self.m*other.m)/(self._d_from(other)**2))
     _a_from = lambda self, other: self._f_from(other)/(self.m)
 
+    def __str__(self):
+        return str(self.r)
 
 class Simulation():
     def __init__(self,*bodies):
         self.bodies = list(bodies)
+        
+    def __str__(self):
+        return str([[b.r.x,b.r.y] for b in self.bodies])
 
 class BruteForce(Simulation):
     def _sum_forces(self):
@@ -71,12 +76,12 @@ class BruteForce(Simulation):
             b.r += v*dt
             b.f.ZERO()
 
+
 b1 = Body(10,100,0)
 b2 = Body(100,0,90)
-
 sim = BruteForce(b1,b2)
 
 for i in range(100):
-    print sim.bodies[0].r, sim.bodies[1].r
+    print sim
     sim.step()
 
