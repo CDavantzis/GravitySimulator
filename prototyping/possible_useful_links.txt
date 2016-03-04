@@ -30,11 +30,16 @@
 # https://en.wikipedia.org/wiki/Jacobi_coordinates
 # http://scienceworld.wolfram.com/physics/Two-BodyProblem.html
 # http://physics.princeton.edu/~fpretori/Nbody/code.htm
-#Ref: http://physics.princeton.edu/~fpretori/Nbody/
-#Testing: https://phet.colorado.edu/sims/my-solar-system/my-solar-system_en.html
-#http://wiki.tomabel.org/index.php?title=Gravitational_N-body_Problem
-#https://sites.google.com/a/ucsc.edu/krumholz/teaching-and-courses/ast119_w15/class-11
-#https://sites.google.com/a/ucsc.edu/krumholz/teaching-and-courses/ast119_w15/class-11
-#https://gist.github.com/mcleonard/5351452
-#https://en.wikipedia.org/wiki/Euclidean_vector
-Ehttp://www.mrmont.com/ap/resources/0_Summer/ijk/ijk.pdf
+# Ref: http://physics.princeton.edu/~fpretori/Nbody/
+# Testing: https://phet.colorado.edu/sims/my-solar-system/my-solar-system_en.html
+# http://wiki.tomabel.org/index.php?title=Gravitational_N-body_Problem
+# https://sites.google.com/a/ucsc.edu/krumholz/teaching-and-courses/ast119_w15/class-11
+# https://sites.google.com/a/ucsc.edu/krumholz/teaching-and-courses/ast119_w15/class-11
+# https://gist.github.com/mcleonard/5351452
+# https://en.wikipedia.org/wiki/Euclidean_vector
+# http://www.mrmont.com/ap/resources/0_Summer/ijk/ijk.pdf
+# https://www.math.ksu.edu/~dbski/writings/twobody.pdf
+# https://en.wikipedia.org/wiki/Two-body_problem
+# https://en.wikipedia.org/wiki/Gravitational_two-body_problem
+# http://www.astro.cornell.edu/~berthoud/alpsat/chapter4a.html
+#http://scienceworld.wolfram.com/physics/Two-BodyProblem.html

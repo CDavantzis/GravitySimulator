@@ -25,7 +25,7 @@ class Body():
     def __repr__(self):
         return str((self.Cx,self.Cy))
 
-    def update(self,dt=.5):
+    def update(self,dt=1):
         self.Vx += dt * self.Fx / self.mass
         self.Vy += dt * self.Fy / self.mass
         self.Cx += dt * self.Vx
@@ -57,10 +57,6 @@ class Simulation():
         return str(self.bodies)
 
 class TwoBody(Simulation):
-    #https://en.wikipedia.org/wiki/Two-body_problem
-    #https://en.wikipedia.org/wiki/Gravitational_two-body_problem
-    #http://www.astro.cornell.edu/~berthoud/alpsat/chapter4a.html
-    #http://scienceworld.wolfram.com/physics/Two-BodyProblem.html
     def __addForces(self):
         n = len(self.bodies)
         for i,j in iter((i,j) for i in range(n) for j in range(n) if i != j):
@@ -71,7 +67,7 @@ class TwoBody(Simulation):
         for body in self.bodies:
             body.update()
 
-class NBody_BruteForce(Simulation):
+class BruteForce(Simulation):
     def __addForces(self):
         n = len(self.bodies)
         for i,j in iter((i,j) for i in range(n) for j in range(n) if i != j):
@@ -82,28 +78,17 @@ class NBody_BruteForce(Simulation):
         for body in self.bodies:
             body.update()
 
-class NBody_BarnesHut(Simulation):
-    pass
-
-class NBody_Fastmultipole(Simulation):
-    pass
-
-class NBody_ParticalMesh(Simulation):
-    pass
-
-class NBody_P3M(Simulation):
-    pass
-
-class NBody_PMTree(Simulation):
-    pass
-
-class NBody_MeanField(Simulation):
-    pass 
-
-B1 = Body(2000,0,0)
-B2 = Body(10,100,0,Vx=0,Vy=14)
 
 
+
+b1 = Body(10,100,0)
+b2 = Body(100,0,90)
+
+sim = BruteForce(b1,b2)
+
+for i in range(100):
+    print (sim.bodies[0].Cx, sim.bodies[0].Cy),(sim.bodies[1].Cx, sim.bodies[1].Cy)
+    sim.step()
 
 
 
