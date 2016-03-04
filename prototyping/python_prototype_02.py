@@ -40,6 +40,7 @@ class Body():
     '''
     help from:
         https://sites.google.com/a/ucsc.edu/krumholz/teaching-and-courses/ast119_w15/class-11
+        http://physics.princeton.edu/~fpretori/Nbody/
     '''
     G = 6.674e-11
     def __init__(self,mass,Cx=0,Cy=0,Vx=0,Vy=0,Fx=0,Fy=0):
