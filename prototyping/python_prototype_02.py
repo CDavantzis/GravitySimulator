@@ -76,7 +76,7 @@ class BruteForce(Simulation):
             b.r += v*dt
             b.f.ZERO()
 
-b1 = Body(10,100,0)
+b1 = Body(10000,0,0)
 b2 = Body(100,0,90)
 sim = BruteForce(b1,b2)
 

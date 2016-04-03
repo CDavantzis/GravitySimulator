@@ -1,45 +1,85 @@
-# http://scienceworld.wolfram.com/physics/topics/CelestialMechanics.html
-# https://en.wikipedia.org/wiki/Gravitational_acceleration
-# https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation
-# https://en.wikipedia.org/wiki/Gravitational_two-body_problem
-# https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion
-# https://en.wikipedia.org/wiki/N-body_problem
-# https://en.wikipedia.org/wiki/N-body_simulation
-# http://physics.tutorvista.com/motion/vector.html
-# http://mathinsight.org/vectors_cartesian_coordinates_2d_3d
-# http://web.mit.edu/pkrein/Public/Final%20Paper%20UW324.pdf
-# http://www.intmath.com/vectors/7-vectors-in-3d-space.php
-# http://www.physics.utah.edu/~sid/physics2010/Unit_Vectors.pdf
-# http://astrowww.phys.uvic.ca/~tatum/celmechs.html
-# http://web.mit.edu/8.01t/www/materials/modules/chapter25.pdf
-# https://en.wikipedia.org/wiki/Orbital_mechanics
-# https://github.com/bengolder/python-geometry/tree/master/geometry
-# http://hplgit.github.io/primer.html/doc/pub/class/._class-readable004.html#sec:class:Vec2D
-# http://astronomy.stackexchange.com/questions/7806/exercise-2d-orbital-mechanics-simulation-python
-# https://en.wikipedia.org/wiki/Celestial_mechanics
-# http://www.cs.cmu.edu/~scandal/alg/nbody.html
-# http://www.luc.edu/faculty/dslavsk/courses/phys301/classnotes/celestialmechanics.pdf
-# http://physics.princeton.edu/~fpretori/Nbody/intro.htm
-# https://en.wikipedia.org/wiki/Cartesian_coordinate_system
-# https://en.wikipedia.org/wiki/Gravitational_two-body_problem
-# https://en.wikipedia.org/wiki/Two-body_problem
-# https://en.wikipedia.org/wiki/Kepler_orbit
-# https://en.wikipedia.org/wiki/Kepler_problem
-# https://en.wikipedia.org/wiki/Equation_of_the_center
-# http://www.astro.cornell.edu/~berthoud/alpsat/chapter4a.html
-# https://en.wikipedia.org/wiki/Jacobi_coordinates
-# http://scienceworld.wolfram.com/physics/Two-BodyProblem.html
-# http://physics.princeton.edu/~fpretori/Nbody/code.htm
-# Ref: http://physics.princeton.edu/~fpretori/Nbody/
-# Testing: https://phet.colorado.edu/sims/my-solar-system/my-solar-system_en.html
-# http://wiki.tomabel.org/index.php?title=Gravitational_N-body_Problem
-# https://sites.google.com/a/ucsc.edu/krumholz/teaching-and-courses/ast119_w15/class-11
-# https://sites.google.com/a/ucsc.edu/krumholz/teaching-and-courses/ast119_w15/class-11
-# https://gist.github.com/mcleonard/5351452
-# https://en.wikipedia.org/wiki/Euclidean_vector
-# http://www.mrmont.com/ap/resources/0_Summer/ijk/ijk.pdf
-# https://www.math.ksu.edu/~dbski/writings/twobody.pdf
-# https://en.wikipedia.org/wiki/Two-body_problem
-# https://en.wikipedia.org/wiki/Gravitational_two-body_problem
-# http://www.astro.cornell.edu/~berthoud/alpsat/chapter4a.html
-#http://scienceworld.wolfram.com/physics/Two-BodyProblem.html
+import math
+import numbers
+
+class Vector2D:
+    '''
+    help from:
+        http://hplgit.github.io/primer.html/doc/pub/class/._class-readable004.html#sec:class:Vec2D
+        https://github.com/bengolder/python-geometry/blob/master/geometry/vector.py
+        https://github.com/bengolder/python-geometry/blob/master/geometry/vector2d.py
+    '''
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    __abs__ = lambda self: math.sqrt(self.x**2 + self.y**2)                              # Calculate Norm
+    __str__ = lambda self: 'Vector2D({0}, {1})'.format(self.x, self.y)                   # String Represitation 
+    __eq__  = lambda self, other: self.x == other.x and self.y == other.y                # Check if equal
+    __ne__  = lambda self, other: not self.__eq__(other)                                 # Check if not equal
+    
+    normalized = lambda self:  self * (1 / abs(self))                                    # Normalized Vector 
+    
+    add_length = lambda self, length: self.normalized() * length + self                  # Add to vector length
+    sub_length = lambda self, length: self.Normalize() * -length + self                  # Subtract from vector length
+    mul_length = lambda self, other:  self.__class__(self.x * other, self.y*other)       # Scalar Multiplication
+    
+    add_vector = lambda self, other:  self.__class__(self.x + other.x, self.y + other.y) # Add vectors
+    sub_vector = lambda self, other:  self.__class__(self.x - other.x, self.y - other.y) # Subtract vectors
+    mul_vector = lambda self, other:  self.x*other.x + self.y*other.y                    # Dot Product
+
+    __mul__ = lambda self, val: self.mul_vector(val) if isinstance(val, self.__class__) else self.mul_length(val)
+    __add__ = lambda self, val: self.add_vector(val) if isinstance(val, self.__class__) else self.add_length(val)
+    __sub__ = lambda self, val: self.sub_vector(val) if isinstance(val, self.__class__) else self.sub_length(val)
+    __div__ = lambda self, val: self.__mul__(val**-1)
+
+    def ZERO(self):
+        ''' Zero in place '''
+        self.x, self.y = 0,0
+
+class Body():
+    '''
+    help from:
+        https://sites.google.com/a/ucsc.edu/krumholz/teaching-and-courses/ast119_w15/class-11
+        http://physics.princeton.edu/~fpretori/Nbody/
+    '''
+    G = 6.674e-11
+    def __init__(self,mass,Cx=0,Cy=0,Vx=0,Vy=0,Fx=0,Fy=0):
+        self.m = mass
+        self.r = Vector2D(Cx,Cy)
+        self.f = Vector2D(Fx,Fy)
+
+    _d_from = lambda self, other: abs(self.r - other.r)
+    _f_from = lambda self, other: (self.r-other.r)*((self.G*self.m*other.m)/(self._d_from(other)**2))
+    _a_from = lambda self, other: self._f_from(other)/(self.m)
+
+    def __str__(self):
+        return str(self.r)
+
+class Simulation():
+    def __init__(self,*bodies):
+        self.bodies = list(bodies)
+
+    def __str__(self):
+        return str([[b.r.x,b.r.y] for b in self.bodies])
+
+class BruteForce(Simulation):
+    def _sum_forces(self):
+        n = len(self.bodies)
+        for b1,b2 in iter((self.bodies[i],self.bodies[j]) for i in range(n) for j in range(n) if i != j):
+            b1.f += b1._f_from(b2)
+
+    def step(self,dt=1):
+        self._sum_forces()
+        for b in self.bodies:
+            a = b.f/b.m
+            v = a*dt
+            b.r += v*dt
+            b.f.ZERO()
+
+b1 = Body(10,100,0)
+b2 = Body(100,0,90)
+sim = BruteForce(b1,b2)
+
+for i in range(100):
+    print sim
+    sim.step()
