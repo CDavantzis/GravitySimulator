@@ -185,6 +185,11 @@
           </column>
           <column>
            <property name="text">
+            <string>Radius</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
             <string>Location X</string>
            </property>
           </column>
@@ -205,12 +210,12 @@
           </column>
           <column>
            <property name="text">
-            <string>Acceleration X</string>
+            <string>Force X</string>
            </property>
           </column>
           <column>
            <property name="text">
-            <string>Acceleration Y</string>
+            <string>Force Y</string>
            </property>
           </column>
          </widget>
@@ -261,6 +266,8 @@
     </property>
     <addaction name="actionImport_Objects"/>
     <addaction name="actionSave"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_Log"/>
    </widget>
    <addaction name="menuAdd_Object"/>
   </widget>
@@ -272,6 +279,11 @@
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSave_Log">
+   <property name="text">
+    <string>Save Log</string>
    </property>
   </action>
  </widget>
