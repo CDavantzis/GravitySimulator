@@ -1,8 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include "glwidget.h"
+#include <QTimer>
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
+
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, ui->openGLWidget, &GLWidget::animate);
+    timer->start(50);
 
     //bind buttons to fuctions
     connect(ui->pushButton_add_row, SIGNAL(released()),this, SLOT(add_row()));

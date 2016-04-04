@@ -221,26 +221,13 @@
          </widget>
         </item>
         <item>
-         <widget class="QOpenGLWidget" name="openGLWidget">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>500</height>
-           </size>
-          </property>
-         </widget>
+         <widget class="GLWidget" name="openGLWidget"/>
         </item>
        </layout>
       </item>
      </layout>
     </item>
-    <item row="7" column="12">
+    <item row="6" column="12">
      <layout class="QGridLayout" name="gridLayout_2"/>
     </item>
    </layout>
@@ -271,6 +258,14 @@
    </widget>
    <addaction name="menuAdd_Object"/>
   </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="statusTip">
+    <string/>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+  </widget>
   <action name="actionImport_Objects">
    <property name="text">
     <string>Open</string>
@@ -288,6 +283,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>GLWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header>glwidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

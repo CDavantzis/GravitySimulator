@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTableWidget>
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -21,10 +22,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-
     QTableWidget* m_pTableWidget;
-
     QStringList m_TableHeader;
+
 
 };
 
