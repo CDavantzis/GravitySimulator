@@ -14,9 +14,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    planet.cpp
+    body.cpp
 
 HEADERS  += mainwindow.h \
-    planet.h
+    body.h
 
 FORMS    += mainwindow.ui

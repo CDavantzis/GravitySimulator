@@ -192,11 +192,6 @@
           </attribute>
           <column>
            <property name="text">
-            <string>Object Name</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
             <string>Mass</string>
            </property>
           </column>

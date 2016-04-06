@@ -22,11 +22,12 @@ public:
 public slots:
     void Run();
     void Stop();
+    void update_table();
 
 private slots:
     void add_row();
     void remove_row();
-    void update();
+    void OnTblItemsCommitData(QWidget* pLineEdit);
 
 
 private:
@@ -34,7 +35,6 @@ private:
     QTableWidget* m_pTableWidget;
     QStringList m_TableHeader;
     QGraphicsScene *scene;
-
 
 
 
