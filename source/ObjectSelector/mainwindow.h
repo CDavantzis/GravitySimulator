@@ -18,7 +18,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     QTimer *timer;
     ~MainWindow();
-
+    test();
 public slots:
     void Run();
     void Stop();

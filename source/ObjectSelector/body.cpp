@@ -1,4 +1,5 @@
 #include "body.h"
+#include "graphwidget.h"
 
 #include <QGraphicsScene>
 #include <QPainter>
@@ -6,20 +7,20 @@
 #include <QDebug>
 
 
-Body::Body(double mass, double radius, double x, double y):mass(mass), radius(radius),color(Qt::white){
-    //QGraphicsScene y-axis grows downward
-    setPos(x,-y);
-}
 
-Body::Body(QTableWidget *table,int index):index(index),color(Qt::white){
-    mass = table->item(index,0)->text().toInt();
-    //radius = table->item(index,1)->text().toInt();
-   radius = 10;
 
-    int x = table->item(index,2)->text().toInt();
-    int y = table->item(index,3)->text().toInt();
-    setPos(x,y);
+Body::Body(int current_index, GraphWidget *graphWidget,QTableWidget *table):graph(graphWidget),color(Qt::white){
+    setFlag(ItemIsMovable);
+    setFlag(ItemSendsGeometryChanges);
+    setCacheMode(DeviceCoordinateCache);
+    setRadius(30);
+    setZValue(-1);
+    setPos(0,0);
 
+    int column_count = table->columnCount();
+    for (int i = 0; i < column_count; i++){
+        this->table_items.append(table->item(current_index,i));
+    }
 }
 
 void  Body::setRadius(double radius){
@@ -30,13 +31,13 @@ void  Body::setRadius(double radius){
 
 
 QRectF Body::boundingRect() const{
-    return QRectF(-radius,-radius,2*radius,2*radius);
+    return QRectF(-radius-1,-radius-1,2*radius+2,2*radius+2);
 }
 
 void Body::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
     painter->setPen(Qt::NoPen);
     painter->setBrush(color);
-    painter->drawEllipse(boundingRect());
+    painter->drawEllipse(QRectF(-radius,-radius,2*radius,2*radius));
 }
 
 void Body::advance(int step)
@@ -50,5 +51,14 @@ void Body::advance(int step)
 }
 
 
+
+QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+    if (change == ItemPositionChange){
+        this->table_items[2]->setText(QString::number(pos().x()));
+        this->table_items[3]->setText(QString::number(-pos().y()));
+    }
+    return QGraphicsItem::itemChange(change, value);
+}
 
 
