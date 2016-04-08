@@ -21,6 +21,9 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="6" column="12">
+     <layout class="QGridLayout" name="gridLayout_2"/>
+    </item>
     <item row="4" column="7">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -251,9 +254,6 @@
        </layout>
       </item>
      </layout>
-    </item>
-    <item row="6" column="12">
-     <layout class="QGridLayout" name="gridLayout_2"/>
     </item>
    </layout>
   </widget>

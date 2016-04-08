@@ -5,7 +5,7 @@
 #include <QStyleOption>
 #include <QDebug>
 
-Body::Body(int current_index, QTableWidget *table):table_row(current_index),color(Qt::white){
+Body::Body(int current_index, QTableWidget *table):color(Qt::white){
     int column_count = table->columnCount();
     for (int i = 0; i < column_count; i++){
         table_items.append(table->item(current_index,i));
@@ -22,9 +22,8 @@ Body::Body(int current_index, QTableWidget *table):table_row(current_index),colo
 
 
 void  Body::setRadius(double radius){
-   // qDebug() << "setRadius(); current index" << table_items[1]->row();
     this->radius = radius;
-    this->table_items[1]->setText(QString::number(radius));
+    //this->table_items[1]->setText(QString::number(radius));
     update();
 }
 
@@ -39,7 +38,7 @@ void Body::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     painter->drawEllipse(QRectF(-radius,-radius,2*radius,2*radius));
     painter->setPen(Qt::black);
     painter->setFont(QFont("Arial",radius));
-    //painter->drawText(this->boundingRect(), Qt::AlignCenter, QString::number(this->table_row));
+    painter->drawText(this->boundingRect(), Qt::AlignCenter, QString::number(table_items[0]->row()+1));
 }
 
 QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
@@ -47,7 +46,8 @@ QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
     if (change == ItemPositionChange){
         //Update table values with changed position
         this->table_items[2]->setText(QString::number(pos().x()));
-        this->table_items[3]->setText(QString::number(-pos().y()));}
+        this->table_items[3]->setText(QString::number(-pos().y()));
+    }
     return QGraphicsItem::itemChange(change, value);
 }
 

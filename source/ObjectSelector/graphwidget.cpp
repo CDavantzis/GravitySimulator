@@ -16,6 +16,8 @@ GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0)
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     scene->setSceneRect(-1000, -1000, 2000, 2000);
     setScene(scene);
+
+    QList<Body*> bodies;
 }
 
 void GraphWidget::itemMoved()
@@ -53,25 +55,7 @@ void GraphWidget::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
 
-    //QList<Planet *> planets;
-    //foreach (QGraphicsItem *item, scene()->items()) {
-    //    if (Node *node = qgraphicsitem_cast<Node *>(item))
-    //        nodes << node;
-    //}
 
-   // foreach (Node *node, nodes)
-   //     node->calculateForces();
-
-   // bool itemsMoved = false;
-   // foreach (Node *node, nodes) {
-    //    if (node->advance())
-    //        itemsMoved = true;
-    //}
-
-   // if (!itemsMoved) {
-   //     killTimer(timerId);
-   //     timerId = 0;
-   // }
 }
 
 #ifndef QT_NO_WHEELEVENT
@@ -98,10 +82,9 @@ void GraphWidget::scaleView(qreal scaleFactor)
 
 void GraphWidget::shuffle()
 {
-   // foreach (QGraphicsItem *item, scene()->items()) {
-    //    if (qgraphicsitem_cast<Node *>(item))
-     //       item->setPos(-150 + qrand() % 300, -150 + qrand() % 300);
-    //}
+    foreach (QGraphicsItem *item, scene()->items()) {
+        item->setPos(-150 + qrand() % 300, -150 + qrand() % 300);
+    }
 }
 
 void GraphWidget::zoomIn(){
@@ -109,18 +92,17 @@ void GraphWidget::zoomIn(){
 }
 
 void GraphWidget::zoomOut(){
-
     scaleView(1 / qreal(1.2));
 }
 
 
 void GraphWidget::addBody(int index,QTableWidget *table){
-    Body *planet = new Body(index,this,table);
+    Body *planet = new Body(index,table);
     scene()->addItem(planet);
 }
 
 void GraphWidget::removeBody(int index){
-    scene()->removeItem(scene()->items()[index]);
+    scene()->removeItem(scene()->items().back());
 }
 
 

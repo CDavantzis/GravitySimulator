@@ -18,6 +18,7 @@ public:
     void addBody(int index,QTableWidget *table);
     void removeBody(int index);
     Body getBody(int index);
+    QList<Body*> bodies;
 
 
 public slots:

@@ -46,7 +46,7 @@ void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
     int value = strNewText.toInt();
 
     QGraphicsItem *item = ui->graphicsView->scene()->items()[index_row];
-
+    qDebug() << "EDIT INDEX:" << index_row;
     switch(index_col) {
         case 0 : qDebug() << '1';
             break;

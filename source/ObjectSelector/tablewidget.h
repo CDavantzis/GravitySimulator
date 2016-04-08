@@ -5,15 +5,14 @@
 #include <QList>
 #include <cmath>
 
-class Body : public QGraphicsItem{
+class TableWidget : public QTableWidget{
 private:
     qreal speed;
     QColor color;
     double mass;
+    int index;
     double radius;
 
-    int table_row;
-    QList<QTableWidgetItem*> table_items;
 
 public:
     Body(int current_index,QTableWidget *table);
