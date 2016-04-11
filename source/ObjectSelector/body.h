@@ -5,25 +5,33 @@
 #include <QList>
 #include <cmath>
 
+class GraphWidget;
+
 class Body : public QGraphicsItem{
 private:
+    QPointF newPos;
+
     qreal speed;
     QColor color;
-    double mass;
     double radius;
+    GraphWidget *graph;
 
     int table_row;
     QList<QTableWidgetItem*> table_items;
 
 public:
-    Body(int current_index,QTableWidget *table);
+    double mass;
+
+    void calculateForces();
+
+    Body(int current_index,QTableWidget *table,GraphWidget *graphWidget);
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
-    void setRadius(double radius);
+    void setMass(double mass);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    bool advance();
 
 protected:
-    void advance(int step) Q_DECL_OVERRIDE;
 
 
 };

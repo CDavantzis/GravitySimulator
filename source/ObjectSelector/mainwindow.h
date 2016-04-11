@@ -18,17 +18,17 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     QTimer *timer;
     ~MainWindow();
-    test();
 public slots:
     void Run();
     void Stop();
-    void update_table();
 
 private slots:
     void add_row();
     void remove_row();
     void OnTblItemsCommitData(QWidget* pLineEdit);
 
+
+    void on_lineEdit_dt_textChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;

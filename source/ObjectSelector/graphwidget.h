@@ -12,14 +12,18 @@ class GraphWidget : public QGraphicsView
 
 public:
     GraphWidget(QWidget *parent = 0);
-    void itemMoved();
 
-    //test
-    void addBody(int index,QTableWidget *table);
+    void addBody(int index);
     void removeBody(int index);
+
+    qreal dt = 1e11;
+
     Body getBody(int index);
     QList<Body*> bodies;
+    int timerId;
 
+    void animate(bool a);
+    QTableWidget *table;
 
 public slots:
     void shuffle();
@@ -37,7 +41,7 @@ protected:
     void scaleView(qreal scaleFactor);
 
 private:
-    int timerId;
+
 };
 
 #endif // GRAPHWIDGET_H

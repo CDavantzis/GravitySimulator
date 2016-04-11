@@ -4,8 +4,8 @@
 #include <math.h>
 #include <QKeyEvent>
 #include <QDebug>
-GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0)
-{
+
+GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0){
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -14,17 +14,12 @@ GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0)
 
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-1000, -1000, 2000, 2000);
+    scene->setSceneRect(-2000, -2000, 4000, 4000);
     setScene(scene);
-
     QList<Body*> bodies;
 }
 
-void GraphWidget::itemMoved()
-{
-    if (!timerId)
-        timerId = startTimer(1000 / 25);
-}
+
 
 void GraphWidget::keyPressEvent(QKeyEvent *event)
 {
@@ -54,7 +49,20 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
 void GraphWidget::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
+    QList<Body *> nodes;
+    foreach (QGraphicsItem *item, scene()->items()) {
+        if (Body *node = qgraphicsitem_cast<Body *>(item))
+            nodes << node;
+    }
 
+    foreach (Body *node, nodes)
+        node->calculateForces();
+
+    bool itemsMoved = false;
+    foreach (Body *node, nodes) {
+        if (node->advance())
+            itemsMoved = true;
+    }
 
 }
 
@@ -96,8 +104,8 @@ void GraphWidget::zoomOut(){
 }
 
 
-void GraphWidget::addBody(int index,QTableWidget *table){
-    Body *planet = new Body(index,table);
+void GraphWidget::addBody(int index){
+    Body *planet = new Body(index,table,this);
     scene()->addItem(planet);
 }
 
@@ -106,3 +114,14 @@ void GraphWidget::removeBody(int index){
 }
 
 
+void GraphWidget::animate(bool a){
+    if (a){
+        //start timer for animation
+        timerId = startTimer(1000 / 25);
+    }
+    else{
+        //stop timer for animation
+        killTimer(timerId);
+        timerId = 0;
+    }
+}
