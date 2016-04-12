@@ -5,7 +5,7 @@
 #include <QKeyEvent>
 #include <QDebug>
 
-GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0){
+GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0), reverse_forces(false){
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -14,9 +14,11 @@ GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0){
 
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-2000, -2000, 4000, 4000);
+    scene->setSceneRect(-4000, -4000, 8000, 8000);
     setScene(scene);
     QList<Body*> bodies;
+
+    dt = 1e11;
 }
 
 
@@ -58,11 +60,13 @@ void GraphWidget::timerEvent(QTimerEvent *event)
     foreach (Body *node, nodes)
         node->calculateForces();
 
+
     bool itemsMoved = false;
     foreach (Body *node, nodes) {
         if (node->advance())
             itemsMoved = true;
     }
+
 
 }
 
@@ -90,8 +94,10 @@ void GraphWidget::scaleView(qreal scaleFactor)
 
 void GraphWidget::shuffle()
 {
+    int width = this->viewport()->width();
+    int height =this->viewport()->height();
     foreach (QGraphicsItem *item, scene()->items()) {
-        item->setPos(-150 + qrand() % 300, -150 + qrand() % 300);
+        item->setPos(-(width/2) + (qrand() %width), - (height/2) + qrand() % (height));
     }
 }
 
@@ -117,11 +123,13 @@ void GraphWidget::removeBody(int index){
 void GraphWidget::animate(bool a){
     if (a){
         //start timer for animation
-        timerId = startTimer(1000 / 25);
+        timerId = startTimer(10);
     }
     else{
         //stop timer for animation
         killTimer(timerId);
         timerId = 0;
     }
+
 }
+

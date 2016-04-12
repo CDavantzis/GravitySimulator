@@ -29,6 +29,7 @@ private slots:
 
 
     void on_lineEdit_dt_textChanged(const QString &arg1);
+    void on_radioButton_reverse_forces_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;

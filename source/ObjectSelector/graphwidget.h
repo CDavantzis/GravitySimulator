@@ -16,7 +16,7 @@ public:
     void addBody(int index);
     void removeBody(int index);
 
-    qreal dt = 1e11;
+    qreal dt;
 
     Body getBody(int index);
     QList<Body*> bodies;
@@ -24,6 +24,8 @@ public:
 
     void animate(bool a);
     QTableWidget *table;
+
+   bool reverse_forces;
 
 public slots:
     void shuffle();

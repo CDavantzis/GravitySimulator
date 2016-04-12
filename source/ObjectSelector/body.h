@@ -23,6 +23,7 @@ public:
     double mass;
 
     void calculateForces();
+    void handleCollision();
 
     Body(int current_index,QTableWidget *table,GraphWidget *graphWidget);
     QRectF boundingRect() const Q_DECL_OVERRIDE;
