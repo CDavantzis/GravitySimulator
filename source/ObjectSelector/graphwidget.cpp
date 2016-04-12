@@ -123,7 +123,7 @@ void GraphWidget::removeBody(int index){
 void GraphWidget::animate(bool a){
     if (a){
         //start timer for animation
-        timerId = startTimer(10);
+        timerId = startTimer(1000/25);
     }
     else{
         //stop timer for animation

@@ -89,9 +89,8 @@ void Body::calculateForces(){
             continue;
         }
 
-       // if (this->collidesWithItem(body)){
-       //     continue;
-       // }
+        //if (this->collidesWithItem(body)){
+        //}
 
 
         QPointF vecD;
@@ -108,9 +107,18 @@ void Body::calculateForces(){
         qreal m2 = body->mass;
         qreal r2 = body->mass/5;
 
-        if (dist < r1+r2){
+        if (dist <= r1+r2){
             //Softening based on distance to center
-            dist = r1+r2;
+            dist = (r1+r2);
+            if (m1 >= m2){
+                this->setMass(m1+m2);
+                delete body;
+            }
+            else{
+                body->setMass(m1+m2);
+                delete this;
+            }
+            continue;
         }
 
         qreal F = G*((m1*m2)/(dist*dist));
@@ -120,8 +128,8 @@ void Body::calculateForces(){
         vecR += dt * vecV;
     }
 
-    QPointF change_in_distance = QPointF(vecR.x(), vecR.y());
-    newPos = pos() + change_in_distance;
+
+    newPos = pos() + QPointF(vecR.x(), vecR.y());
 
 }
 
