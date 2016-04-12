@@ -151,9 +151,26 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_reverse_forces">
+         <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Reverse Forces</string>
+           <string>Forces:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkBox_forceOption_cumulative">
+          <property name="text">
+           <string>Cumulative</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkBox_forceOption_reverse">
+          <property name="text">
+           <string>Reverse</string>
           </property>
          </widget>
         </item>
@@ -187,6 +204,9 @@
             <width>0</width>
             <height>0</height>
            </size>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QAbstractScrollArea::AdjustToContents</enum>
           </property>
           <property name="alternatingRowColors">
            <bool>true</bool>
@@ -225,16 +245,6 @@
             <string>Velocity Y</string>
            </property>
           </column>
-          <column>
-           <property name="text">
-            <string>Force X</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>Force Y</string>
-           </property>
-          </column>
          </widget>
         </item>
         <item>
@@ -244,12 +254,12 @@
           </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>1</horstretch>
+            <horstretch>2</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="renderHints">
-           <set>QPainter::Antialiasing|QPainter::TextAntialiasing</set>
+           <set>QPainter::SmoothPixmapTransform</set>
           </property>
          </widget>
         </item>

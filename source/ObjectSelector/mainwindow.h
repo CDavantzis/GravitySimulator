@@ -26,10 +26,11 @@ private slots:
     void add_row();
     void remove_row();
     void OnTblItemsCommitData(QWidget* pLineEdit);
-
-
     void on_lineEdit_dt_textChanged(const QString &arg1);
-    void on_radioButton_reverse_forces_toggled(bool checked);
+
+
+    void on_checkBox_forceOption_cumulative_toggled(bool checked);
+    void on_checkBox_forceOption_reverse_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;

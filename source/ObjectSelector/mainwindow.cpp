@@ -106,17 +106,16 @@ void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
 
 
 
-void MainWindow::on_lineEdit_dt_textChanged(const QString &arg1)
-{
+void MainWindow::on_lineEdit_dt_textChanged(const QString &arg1){
     ui->graphicsView->dt = 1 * pow(10, arg1.toInt());
 }
 
+void MainWindow::on_checkBox_forceOption_cumulative_toggled(bool checked){
+    //If true velocity force will be cumulative.
+    ui->graphicsView->forceOption_cumulative = checked;
+}
 
-
-
-void MainWindow::on_radioButton_reverse_forces_toggled(bool checked){
-    if (checked){
-        ui->graphicsView->reverse_forces = true;}
-    else{
-        ui->graphicsView->reverse_forces = false;}
+void MainWindow::on_checkBox_forceOption_reverse_toggled(bool checked){
+    //If true the objects will repel instead of attract.
+    ui->graphicsView->forceOption_reverse = checked;
 }

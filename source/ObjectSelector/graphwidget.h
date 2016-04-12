@@ -25,7 +25,9 @@ public:
     void animate(bool a);
     QTableWidget *table;
 
-   bool reverse_forces;
+    bool forceOption_cumulative; //If true velocity force will be cumulative.
+    bool forceOption_reverse;    //If true the objects will repel instead of attract.
+
 
 public slots:
     void shuffle();
@@ -39,7 +41,6 @@ protected:
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 #endif
     void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
-
     void scaleView(qreal scaleFactor);
 
 private:

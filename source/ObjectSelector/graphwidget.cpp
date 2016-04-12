@@ -5,12 +5,11 @@
 #include <QKeyEvent>
 #include <QDebug>
 
-GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0), reverse_forces(false){
-    setRenderHint(QPainter::Antialiasing);
-    setTransformationAnchor(AnchorUnderMouse);
-    setViewportUpdateMode(BoundingRectViewportUpdate);
+GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0){
+    //setTransformationAnchor(AnchorUnderMouse);
     setDragMode(QGraphicsView::ScrollHandDrag);
-    setCacheMode(QGraphicsView::CacheBackground);
+    //setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    //setCacheMode(QGraphicsView::CacheBackground);
 
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -19,6 +18,10 @@ GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0), re
     QList<Body*> bodies;
 
     dt = 1e11;
+    forceOption_cumulative = true;
+    forceOption_reverse = false;
+    this->scene()->views().first()->setRenderHint(QPainter::Antialiasing, true);
+
 }
 
 
@@ -70,6 +73,8 @@ void GraphWidget::timerEvent(QTimerEvent *event)
 
 }
 
+
+
 #ifndef QT_NO_WHEELEVENT
 void GraphWidget::wheelEvent(QWheelEvent *event)
 {
@@ -97,7 +102,10 @@ void GraphWidget::shuffle()
     int width = this->viewport()->width();
     int height =this->viewport()->height();
     foreach (QGraphicsItem *item, scene()->items()) {
-        item->setPos(-(width/2) + (qrand() %width), - (height/2) + qrand() % (height));
+        if (Body *body = qgraphicsitem_cast<Body *>(item)){
+            body->setPos(-(width/2) + (qrand() %width), - (height/2) + qrand() % (height)); //Move body to random position
+            body->vectVel = QPointF(0,0); //zero velocity vector
+        }
     }
 }
 
@@ -107,6 +115,7 @@ void GraphWidget::zoomIn(){
 
 void GraphWidget::zoomOut(){
     scaleView(1 / qreal(1.2));
+
 }
 
 
@@ -130,6 +139,5 @@ void GraphWidget::animate(bool a){
         killTimer(timerId);
         timerId = 0;
     }
-
 }
 
