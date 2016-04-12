@@ -77,31 +77,30 @@ void MainWindow::remove_row(){
 
 
 void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
-    int index_row = ui->tableWidget->currentRow();
-    int index_col = ui->tableWidget->currentColumn();
-
-    QString strNewText = reinterpret_cast<QLineEdit*>(pLineEdit)->text();
-    int value = strNewText.toInt();
-
-    QGraphicsItem *item = ui->graphicsView->scene()->items()[index_row];
-
-    switch(index_col) {
-        case 0 :
-            qgraphicsitem_cast<Body *>(item)->setMass(value);
-            break;
-        case 1 :
-             item->setX(value);
-
-              break;
-        case 2 :
-             item->setY(-value);
-
-              break;
-        case 3 :
-              break;
-   }
-   ui->graphicsView->scene()->update();
-
+    int row = ui->tableWidget->currentRow();
+    int col = ui->tableWidget->currentColumn();
+    double value = (reinterpret_cast<QLineEdit*>(pLineEdit)->text()).toDouble();
+    QGraphicsItem *item = ui->graphicsView->scene()->items()[row];
+    if (Body *body = qgraphicsitem_cast<Body *>(item)){
+        switch(col) {
+            case 0:
+                body->setMass(value);
+                break;
+            case 1:
+                body->setX(value);
+                break;
+            case 2:
+                body->setY(-value);
+                break;
+            case 3:
+                body->vectVel.setX(value);
+                break;
+            case 4:
+                body->vectVel.setY(-value);
+                break;
+        }
+     }
+     ui->graphicsView->scene()->update();
 }
 
 
@@ -110,6 +109,9 @@ void MainWindow::on_lineEdit_dt_textChanged(const QString &arg1){
     ui->graphicsView->dt = 1 * pow(10, arg1.toInt());
 }
 
+
+
+//Check Boxes
 void MainWindow::on_checkBox_forceOption_cumulative_toggled(bool checked){
     //If true velocity force will be cumulative.
     ui->graphicsView->forceOption_cumulative = checked;
@@ -118,4 +120,10 @@ void MainWindow::on_checkBox_forceOption_cumulative_toggled(bool checked){
 void MainWindow::on_checkBox_forceOption_reverse_toggled(bool checked){
     //If true the objects will repel instead of attract.
     ui->graphicsView->forceOption_reverse = checked;
+}
+
+void MainWindow::on_checkBox_antialiasing_toggled(bool checked){
+    //If true the graphicsview will render in high quality.
+    ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing, checked);
+
 }

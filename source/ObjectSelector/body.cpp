@@ -42,7 +42,6 @@ QRectF Body::boundingRect() const{
 }
 
 void Body::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
-    painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::white);
     painter->drawEllipse(QRectF(-radius,-radius,2*radius,2*radius));

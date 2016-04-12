@@ -23,14 +23,17 @@ public slots:
     void Stop();
 
 private slots:
+
     void add_row();
     void remove_row();
     void OnTblItemsCommitData(QWidget* pLineEdit);
     void on_lineEdit_dt_textChanged(const QString &arg1);
 
 
+    //check boxes
     void on_checkBox_forceOption_cumulative_toggled(bool checked);
     void on_checkBox_forceOption_reverse_toggled(bool checked);
+    void on_checkBox_antialiasing_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;
