@@ -6,18 +6,11 @@
 #include <QDebug>
 
 GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0){
-
     //Configure GraphWidget Scene
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     scene->setSceneRect(-4000, -4000, 8000, 8000);
     setScene(scene);
-
-    //Configure custom options
-    dt = 1e11;
-    forceOption_cumulative = true;
-    forceOption_reverse = false;
-
     QList<Body*> bodies;
 }
 
