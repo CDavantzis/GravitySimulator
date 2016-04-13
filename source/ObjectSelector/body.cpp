@@ -98,7 +98,7 @@ void Body::calculateForces(){
         qreal dist = sqrt(pow(vectDist.x(), 2) + pow(vectDist.y(), 2)); //Distance between bodies
 
         //Soften distance
-        //dist = qMax(dist, this->radius+other->radius);
+        dist = qMax(dist, this->radius+other->radius);
 
         qreal F = G*((this->mass*other->mass)/(dist*dist));
         QPointF vectForce = F * vectDist / dist;
@@ -122,9 +122,9 @@ void Body::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (t!=0){
         QPointF vectD = QPointF(this->x()-dragStartPos.x(),this->y()-dragStartPos.y());
         QPointF vectA = (2*(vectD-(t*vectVel)))/(t*t);
-        //vectVel = (vectA*t)*.0000001;
-        //this->table_items[3]->setText(QString::number(vectVel.x()));  //Velocity X
-        //this->table_items[4]->setText(QString::number(-vectVel.y())); //Velocity Y
+        vectVel = (vectA*t)*.0000001;
+        this->table_items[3]->setText(QString::number(vectVel.x()));  //Velocity X
+        this->table_items[4]->setText(QString::number(-vectVel.y())); //Velocity Y
     }
     QGraphicsItem::mouseReleaseEvent(event);
 }
