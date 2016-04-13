@@ -3,7 +3,7 @@
 
 #include <QGraphicsView>
 #include <QTableWidget>
-
+#include <QTime>
 class Body;
 
 class GraphWidget : public QGraphicsView
@@ -21,7 +21,7 @@ public:
     Body getBody(int index);
     QList<Body*> bodies;
     int timerId;
-
+    QTime ElapsedTime;
     void animate(bool a);
     QTableWidget *table;
 

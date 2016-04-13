@@ -4,6 +4,8 @@
 #include <math.h>
 #include <QKeyEvent>
 #include <QDebug>
+#include <QTime>
+#include <QThread>
 
 GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0){
     //Configure GraphWidget Scene
@@ -40,24 +42,32 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void GraphWidget::timerEvent(QTimerEvent *event)
-{
+void GraphWidget::timerEvent(QTimerEvent *event){
     Q_UNUSED(event);
-    QList<Body *> nodes;
+
+    //Framerate management
+    int elapsed = ElapsedTime.elapsed();
+    if (elapsed <= 40){
+        QThread::msleep(40-elapsed);
+    }
+    elapsed = ElapsedTime.restart();
+    int framerate = int((double(elapsed)/40)*100);
+
+
+    //Get Bodies
+    QList<Body *> bodies;
     foreach (QGraphicsItem *item, scene()->items()) {
-        if (Body *node = qgraphicsitem_cast<Body *>(item))
-            nodes << node;
+        if (Body *body = qgraphicsitem_cast<Body *>(item))
+            bodies << body;
     }
 
-    foreach (Body *node, nodes)
-        node->calculateForces();
-
-
-    bool itemsMoved = false;
-    foreach (Body *node, nodes) {
-        if (node->advance())
-            itemsMoved = true;
-    }
+    //BRUTEFORCE
+    //Calculate New Postions
+    foreach (Body *body, bodies)
+        body->calculateForces();
+    //Move To New Postition
+    foreach (Body *body, bodies)
+        body->advance();
 
 
 }
@@ -121,7 +131,8 @@ void GraphWidget::removeBody(int index){
 void GraphWidget::animate(bool a){
     if (a){
         //start timer for animation
-        timerId = startTimer(1000/25);
+        timerId = startTimer(0);
+        ElapsedTime.start();
     }
     else{
         //stop timer for animation
