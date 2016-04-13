@@ -15,7 +15,6 @@ GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0){
 }
 
 
-
 void GraphWidget::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {

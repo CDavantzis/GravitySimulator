@@ -48,12 +48,10 @@ void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
      ui->graphicsView->scene()->update();
 }
 
-
 //lineEdit Slots
 void MainWindow::on_lineEdit_dt_textChanged(const QString &arg1){
     ui->graphicsView->dt = 1 * pow(10, arg1.toInt());
 }
-
 //Start animation
 void MainWindow::on_pushButton_run_clicked(){
     ui->graphicsView->animate(true);
@@ -86,22 +84,16 @@ void MainWindow::on_pushButton_remove_row_clicked(){
         ui->graphicsView->removeBody(index);
     }
 }
-
 //checkBox Slots
 void MainWindow::on_checkBox_forceOption_cumulative_toggled(bool checked){
     //If true velocity force will be cumulative.
     ui->graphicsView->forceOption_cumulative = checked;
 }
-
 void MainWindow::on_checkBox_forceOption_reverse_toggled(bool checked){
     //If true the objects will repel instead of attract.
     ui->graphicsView->forceOption_reverse = checked;
 }
-
 void MainWindow::on_checkBox_antialiasing_toggled(bool checked){
     //If true the graphicsview will render in high quality.
     ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing, checked);
 }
-
-
-

@@ -11,8 +11,6 @@ class Body : public QGraphicsItem{
 private:
     QPointF newPos;
 
-    qreal speed;
-    QColor color;
     GraphWidget *graph;
 
     int table_row;
@@ -22,26 +20,19 @@ private:
     qreal radius; //Object Radius
 
 public:
-    void setMass(qreal mass);
-    //qreal Mass();     //Public Mass
-    //qreal Radius();   //Public Radius
+    Body(int current_index,QTableWidget *table,GraphWidget *graphWidget);
 
-
-    QPointF vectVel; //Velocity Vector
-
+    bool advance();
 
     void calculateForces();
     void handleCollision();
-
-    Body(int current_index,QTableWidget *table,GraphWidget *graphWidget);
-    QRectF boundingRect() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
+    void setMass(qreal mass);
+
+    QColor color;
+    QPointF vectVel; //Velocity Vector
+    QRectF boundingRect() const Q_DECL_OVERRIDE;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    bool advance();
-
-protected:
-
-
 };
 
 #endif

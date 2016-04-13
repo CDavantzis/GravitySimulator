@@ -63,9 +63,6 @@ QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
     return QGraphicsItem::itemChange(change, value);
 }
 
-
-
-
 bool Body::advance()
 {
     if (newPos == pos())
