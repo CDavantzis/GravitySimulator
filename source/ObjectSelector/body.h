@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 #include <QList>
 #include <cmath>
+#include <QTime>
 
 class GraphWidget;
 
@@ -19,6 +20,11 @@ private:
     qreal mass;   //Object Mass
     qreal radius; //Object Radius
 
+
+    QPointF dragStartPos;
+    QPointF dragEndPos;
+    QTime   dragTime;
+
 public:
     Body(int current_index,QTableWidget *table,GraphWidget *graphWidget);
 
@@ -32,7 +38,11 @@ public:
     QColor color;
     QPointF vectVel; //Velocity Vector
     QRectF boundingRect() const Q_DECL_OVERRIDE;
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+protected:
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) Q_DECL_OVERRIDE;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
 };
 
 #endif

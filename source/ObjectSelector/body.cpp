@@ -43,7 +43,7 @@ QRectF Body::boundingRect() const{
 
 void Body::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
     painter->setPen(Qt::NoPen);
-    painter->setBrush(Qt::white);
+    painter->setBrush(color);
     painter->drawEllipse(QRectF(-radius,-radius,2*radius,2*radius));
     //painter->setFont(QFont("Arial",radius));
      //painter->drawText(this->boundingRect(), Qt::AlignCenter, QString::number(this->table_row));
@@ -93,11 +93,12 @@ void Body::calculateForces(){
             continue;
         }
 
+
         QPointF vectDist =  graph->forceOption_reverse ? this->mapToItem(other, 0, 0) : other->mapToItem(this,0,0); //Distance Vector.
         qreal dist = sqrt(pow(vectDist.x(), 2) + pow(vectDist.y(), 2)); //Distance between bodies
 
         //Soften distance
-        dist = qMax(dist, this->radius+other->radius);
+        //dist = qMax(dist, this->radius+other->radius);
 
         qreal F = G*((this->mass*other->mass)/(dist*dist));
         QPointF vectForce = F * vectDist / dist;
@@ -107,4 +108,25 @@ void Body::calculateForces(){
     }
     newPos = pos() + QPointF(vectPosChange.x(), vectPosChange.y());
 }
+
+void Body::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    dragStartPos = pos();
+    dragTime.start();
+    QGraphicsItem::mousePressEvent(event);
+}
+
+void Body::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    double t = 0.001*dragTime.elapsed();
+    if (t!=0){
+        QPointF vectD = QPointF(this->x()-dragStartPos.x(),this->y()-dragStartPos.y());
+        QPointF vectA = (2*(vectD-(t*vectVel)))/(t*t);
+        //vectVel = (vectA*t)*.0000001;
+        //this->table_items[3]->setText(QString::number(vectVel.x()));  //Velocity X
+        //this->table_items[4]->setText(QString::number(-vectVel.y())); //Velocity Y
+    }
+    QGraphicsItem::mouseReleaseEvent(event);
+}
+
 
