@@ -47,13 +47,12 @@ void GraphWidget::timerEvent(QTimerEvent *event){
 
     //Framerate management
     int elapsed = ElapsedTime.elapsed();
-    qDebug() << elapsed;
     if (elapsed <= 20){
         QThread::msleep(20-elapsed);
     }
     elapsed = ElapsedTime.restart();
     int framerate = int((double(elapsed)/20)*100);
-    Q_UNUSED(framerate);
+    qDebug() << framerate;
 
     foreach (Body *body, bodies)
         body->calculateForces(); //Calculate New Postions
@@ -104,17 +103,37 @@ void GraphWidget::zoomOut(){
 }
 
 
-void GraphWidget::addBody(int index){
-    Body *body = new Body(index,table,this);
+void GraphWidget::addBody(){
+    int cols = table->columnCount();
+    int rows = table->rowCount();
+    qDebug() << rows;
+    table->insertRow(rows);
+    for (int col = 0; col < cols ; ++col)
+       table->setItem(rows,col,new QTableWidgetItem("0"));
+
+    Body *body = new Body(this,rows);
     bodies.append(body);
     scene()->addItem(body);
+
 }
 
-void GraphWidget::removeBody(int index){
-    Q_UNUSED(index);
+void GraphWidget::removeBody(){
+    //Remove Body
+    int rows = table->rowCount();
+    if (rows){
+        table->removeRow(rows-1);
+        scene()->removeItem(bodies.back());
+        bodies.pop_back();
+    }
+}
 
-    scene()->removeItem(bodies.back());
-    bodies.pop_back();
+void GraphWidget::removeBody(Body *body){
+    int index = bodies.indexOf(body);
+    qDebug() << index;
+    table->removeRow(index);
+    scene()->removeItem(bodies[index]);
+    bodies.removeAt(index);
+    update();
 }
 
 

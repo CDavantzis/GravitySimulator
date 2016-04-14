@@ -8,13 +8,12 @@
 
 const qreal G = 6.674e-11;
 
-Body::Body(int current_index, QTableWidget *table,GraphWidget *graphWidget):
-    graph(graphWidget),
-    table_row(current_index),
-    color(Qt::white){
-        int column_count = table->columnCount();
+Body::Body(GraphWidget *graphWidget, int index):graph(graphWidget), color(Qt::white){
+        this->index = index;
+
+        int column_count = graph->table->columnCount();
         for (int i = 0; i < column_count; i++){
-            table_items.append(table->item(current_index,i));
+            table_items.append(graph->table->item(index,i));
         }
         setFlag(ItemIsMovable);
         setFlag(ItemSendsGeometryChanges);
@@ -23,6 +22,7 @@ Body::Body(int current_index, QTableWidget *table,GraphWidget *graphWidget):
         setPos(0,0);
         setMass(100);
         vectVel = QPointF(0,0); //zero velocity vector
+        destroy_on_next_step = false;
 }
 
 
@@ -63,7 +63,13 @@ QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
 }
 
 void Body::step(){
-    setPos(newPos); //Move to newPos
+    if(destroy_on_next_step){
+        graph->removeBody(this);
+        delete this;
+    }
+    else{
+        setPos(newPos); //Move to newPos
+    }
 }
 
 void Body::calculateForces(){
@@ -76,18 +82,29 @@ void Body::calculateForces(){
         vectVel = QPointF(0,0); //zero velocity vector
     }
     QPointF vectPosChange = QPointF(0,0); //Position change vector.
-    foreach (Body *other, graph->bodies) {
-        if ((!other) || (this == other)){
-            //skip calculation if other is not a body or if the other is this body;
-            continue;
-        }
-        QPointF vectDist =  graph->forceOption_reverse ? this->mapToItem(other, 0, 0) : other->mapToItem(this,0,0); //Distance Vector.
-        qreal dist = sqrt(pow(vectDist.x(), 2) + pow(vectDist.y(), 2)); //Distance between bodies
-        dist = qMax(dist, this->radius+other->radius);         //Soften distance
-        qreal F = G*((this->mass*other->mass)/(dist*dist));
-        QPointF vectForce = F * vectDist / dist;
-        vectVel += graph->dt * vectForce / mass;
+
+    if (graph->bodies.count() == 1){
         vectPosChange += graph->dt *  vectVel;
+    }
+    else{
+        foreach (Body *other, graph->bodies) {
+            if ((!other) || (this == other)){
+                //skip calculation if other is not a body or if the other is this body;
+                continue;
+            }
+            QPointF vectDist =  graph->forceOption_reverse ? this->mapToItem(other, 0, 0) : other->mapToItem(this,0,0); //Distance Vector.
+            qreal dist = sqrt(pow(vectDist.x(), 2) + pow(vectDist.y(), 2)); //Distance between bodies
+
+            if ((graph->bodies_collide) && (dist <= this->radius+other->radius)){
+                collideWith(other);
+            }
+
+            dist = qMax(dist, this->radius+other->radius);         //Soften distance
+            qreal F = G*((this->mass*other->mass)/(dist*dist));
+            QPointF vectForce = F * vectDist / dist;
+            vectVel += graph->dt * vectForce / mass;
+            vectPosChange += graph->dt *  vectVel;
+        }
     }
     newPos = pos() + QPointF(vectPosChange.x(), vectPosChange.y());
 }
@@ -111,3 +128,15 @@ void Body::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
 }
 
 
+void Body::collideWith(Body *other){
+    if (this->mass >=other->mass){
+        this->setMass(this->mass + other->mass);
+        this->vectVel = ((this->mass*this->vectVel)+(other->mass*other->vectVel))/(this->mass+other->mass);     //inelastic collision v=(m1*v1+m2*v2)/(m1+m2)
+        other->destroy_on_next_step = true;
+    }
+    else{
+        other->setMass(this->mass + other->mass);
+        other->vectVel = ((this->mass*this->vectVel)+(other->mass*other->vectVel))/(this->mass+other->mass);    //inelastic collision v=(m1*v1+m2*v2)/(m1+m2)
+        this->destroy_on_next_step = true;
+    }
+}

@@ -15,8 +15,9 @@ class GraphWidget : public QGraphicsView
 public:
     GraphWidget(QWidget *parent = 0);
 
-    void addBody(int index);
-    void removeBody(int index);
+    void addBody();
+    void removeBody();
+    void removeBody(Body *body);
 
     qreal dt;
 
@@ -29,7 +30,7 @@ public:
 
     bool forceOption_cumulative; //If true velocity force will be cumulative.
     bool forceOption_reverse;    //If true the objects will repel instead of attract.
-
+    bool bodies_collide;         //If true bodies will merge on collision.
 
 public slots:
     void shuffle();

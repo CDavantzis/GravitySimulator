@@ -10,11 +10,10 @@ class GraphWidget;
 
 class Body : public QGraphicsItem{
 private:
+    int index;
     QPointF newPos;
 
     GraphWidget *graph;
-
-    int table_row;
     QList<QTableWidgetItem*> table_items;
 
     qreal mass;   //Object Mass
@@ -25,8 +24,11 @@ private:
     QPointF dragEndPos;
     QTime   dragTime;
 
+    bool destroy_on_next_step;
+
+    void collideWith(Body *other);
 public:
-    Body(int current_index,QTableWidget *table,GraphWidget *graphWidget);
+    Body(GraphWidget *graphWidget,int index);
 
     void step(); //Move to newPos
 

@@ -34,6 +34,7 @@ private slots:
     void on_checkBox_forceOption_cumulative_toggled(bool checked);
     void on_checkBox_forceOption_reverse_toggled(bool checked);
     void on_checkBox_antialiasing_toggled(bool checked);
+    void on_checkBox_bodies_collide_toggled(bool checked);
 };
 
 #endif // MAINWINDOW_H

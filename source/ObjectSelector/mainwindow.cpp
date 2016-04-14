@@ -7,8 +7,10 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     ui->graphicsView->table = ui->tableWidget;
 
     //set values to initial .ui conditions
-    ui->graphicsView->forceOption_cumulative = ui->checkBox_forceOption_cumulative->checkState();
-    ui->graphicsView->forceOption_reverse = ui->checkBox_forceOption_reverse->checkState();
+    ui->graphicsView->forceOption_cumulative = ui->checkBox_forceOption_cumulative->isChecked();
+    ui->graphicsView->forceOption_reverse = ui->checkBox_forceOption_reverse->isChecked();
+    ui->graphicsView->bodies_collide = ui->checkBox_bodies_collide->isChecked();
+
     ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing,ui->checkBox_antialiasing->checkState());
     ui->graphicsView->dt = 1*pow(10,ui->lineEdit_dt->text().toInt());
     ui->statusBar->showMessage(tr("Ready"));
@@ -62,26 +64,15 @@ void MainWindow::on_pushButton_stop_clicked(){
     ui->pushButton_run->setEnabled(true);
     ui->pushButton_stop->setEnabled(false);
 }
-void MainWindow::on_pushButton_add_row_clicked(){
-    //Add body
-    int cCol = ui->tableWidget->columnCount();
-    int cRow = ui->tableWidget->rowCount();
 
-    ui->tableWidget->insertRow(cRow);
-    for (int col = 0; col < cCol ; ++col){
-       ui->tableWidget->setItem(cRow,col,new QTableWidgetItem("0"));
-    }
-    ui->graphicsView->addBody(cRow);
+void MainWindow::on_pushButton_add_row_clicked(){
+    ui->graphicsView->addBody();
 }
 void MainWindow::on_pushButton_remove_row_clicked(){
-    //Remove Body
-    int cRow = ui->tableWidget->rowCount();
-    if (cRow != 0){
-        int index = cRow - 1;
-        ui->tableWidget->removeRow(index);
-        ui->graphicsView->removeBody(index);
-    }
+    ui->graphicsView->removeBody();
 }
+
+
 //checkBox Slots
 void MainWindow::on_checkBox_forceOption_cumulative_toggled(bool checked){
     //If true velocity force will be cumulative.
@@ -91,7 +82,12 @@ void MainWindow::on_checkBox_forceOption_reverse_toggled(bool checked){
     //If true the objects will repel instead of attract.
     ui->graphicsView->forceOption_reverse = checked;
 }
+void MainWindow::on_checkBox_bodies_collide_toggled(bool checked){
+    ui->graphicsView->bodies_collide = checked;
+}
 void MainWindow::on_checkBox_antialiasing_toggled(bool checked){
     //If true the graphicsview will render in high quality.
     ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing, checked);
 }
+
+
