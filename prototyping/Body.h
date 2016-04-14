@@ -4,7 +4,7 @@
 #include <vector>
 #include <cmath>
 
-#define G = 6.67e-11
+#define G 6.67e-11
 
 
 
@@ -24,7 +24,7 @@ private:
 public:
 	Body(double mass, 
 		double radius, 
-		double x, double y
+		double x, double y,
 		double vx, double vy);
 
 	void update(double dt);

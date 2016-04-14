@@ -4,7 +4,7 @@
 
 Body::Body(double mass, 
 		double radius, 
-		double x, double y 
+		double x, double y, 
 		double vx = 0, double vy = 0): mass(mass), radius(radius), x(x), y(y), vx(vx), vy(vy){
 
 
@@ -31,7 +31,7 @@ double Body::distanceTo(Body b){
 	
 }
 
-void Body::resetforce(){
+void Body::resetForce(){
 	fx = 0;
 	fy = 0;
 }
@@ -41,7 +41,9 @@ void Body::resetforce(){
 //Maybe we could just load array of bodies stored nicely and run a code through it
 void Body::addForce(Body b){
 
-	double dist = this.distanceTo(b);
+	double dx = x - b.x;
+	double dy = y - b.x;	
+	double dist = sqrt(dx*dx + dy*dy);
 
 	double F = (G * mass * b.mass) / (dist*dist);
 	
@@ -49,6 +51,8 @@ void Body::addForce(Body b){
 	fy += F * (b.y - y) / dist;
 
 }
+
+
 
 
 
