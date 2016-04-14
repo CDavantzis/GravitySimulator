@@ -1,3 +1,6 @@
+#ifndef BODY_H
+#define BODY_H
+
 #include <vector>
 #include <cmath>
 
@@ -9,19 +12,20 @@ class Body{
 private:
 	double mass;
 	double radius;
+
 	//double rotationTime;
 
-	std::vector<double> position;
-	std::vector<double> velocity;
-	std::vector<double> force;
+	double x, y;	//position
+	double vx, vy;	//velocity
+	double fx, fy;	//force
 
 
 
 public:
 	Body(double mass, 
 		double radius, 
-		std::vector<double> position, 
-		std::vector<double> velocity);
+		double x, double y
+		double vx, double vy);
 
 	void update(double dt);
 
@@ -33,3 +37,8 @@ public:
 
 
 };
+
+#endif
+
+
+
