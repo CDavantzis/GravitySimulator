@@ -28,7 +28,7 @@ private:
 public:
     Body(int current_index,QTableWidget *table,GraphWidget *graphWidget);
 
-    bool advance();
+    void step(); //Move to newPos
 
     void calculateForces();
     void handleCollision();

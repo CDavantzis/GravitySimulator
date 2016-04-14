@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     ui->graphicsView->forceOption_reverse = ui->checkBox_forceOption_reverse->checkState();
     ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing,ui->checkBox_antialiasing->checkState());
     ui->graphicsView->dt = 1*pow(10,ui->lineEdit_dt->text().toInt());
-
+    ui->statusBar->showMessage(tr("Ready"));
     //Make Connections
     connect(ui->pushButton_randomize, SIGNAL (released()),this->ui->graphicsView, SLOT(shuffle()));
     connect(ui->tableWidget->itemDelegate(), &QAbstractItemDelegate::commitData, this, &OnTblItemsCommitData);
@@ -25,26 +25,24 @@ void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
     int row = ui->tableWidget->currentRow();
     int col = ui->tableWidget->currentColumn();
     double value = (reinterpret_cast<QLineEdit*>(pLineEdit)->text()).toDouble();
-    QGraphicsItem *item = ui->graphicsView->scene()->items()[row];
-    if (Body *body = qgraphicsitem_cast<Body *>(item)){
-        switch(col) {
-            case 0:
-                body->setMass(value);
-                break;
-            case 1:
-                body->setX(value);
-                break;
-            case 2:
-                body->setY(-value);
-                break;
-            case 3:
-                body->vectVel.setX(value);
-                break;
-            case 4:
-                body->vectVel.setY(-value);
-                break;
-        }
-     }
+    Body *body = ui->graphicsView->bodies[row];
+    switch(col) {
+        case 0:
+            body->setMass(value);
+            break;
+        case 1:
+            body->setX(value);
+            break;
+        case 2:
+            body->setY(-value);
+            break;
+        case 3:
+            body->vectVel.setX(value);
+            break;
+        case 4:
+            body->vectVel.setY(-value);
+            break;
+    }
      ui->graphicsView->scene()->update();
 }
 

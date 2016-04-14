@@ -47,31 +47,20 @@ void GraphWidget::timerEvent(QTimerEvent *event){
 
     //Framerate management
     int elapsed = ElapsedTime.elapsed();
-    if (elapsed <= 40){
-        QThread::msleep(40-elapsed);
+    qDebug() << elapsed;
+    if (elapsed <= 20){
+        QThread::msleep(20-elapsed);
     }
     elapsed = ElapsedTime.restart();
-    int framerate = int((double(elapsed)/40)*100);
+    int framerate = int((double(elapsed)/20)*100);
+    Q_UNUSED(framerate);
 
-
-    //Get Bodies
-    QList<Body *> bodies;
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (Body *body = qgraphicsitem_cast<Body *>(item))
-            bodies << body;
-    }
-
-    //BRUTEFORCE
-    //Calculate New Postions
     foreach (Body *body, bodies)
-        body->calculateForces();
-    //Move To New Postition
+        body->calculateForces(); //Calculate New Postions
     foreach (Body *body, bodies)
-        body->advance();
-
+        body->step();            //Move To New Postition
 
 }
-
 
 
 #ifndef QT_NO_WHEELEVENT
@@ -96,15 +85,12 @@ void GraphWidget::scaleView(qreal scaleFactor)
     scale(scaleFactor, scaleFactor);
 }
 
-void GraphWidget::shuffle()
-{
+void GraphWidget::shuffle(){
     int width = this->viewport()->width();
     int height =this->viewport()->height();
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (Body *body = qgraphicsitem_cast<Body *>(item)){
-            body->setPos(-(width/2) + (qrand() %width), - (height/2) + qrand() % (height)); //Move body to random position
-            body->vectVel = QPointF(0,0); //zero velocity vector
-        }
+    foreach (Body *body, bodies) {
+        body->setPos(-(width/2) + (qrand() %width), - (height/2) + qrand() % (height)); //Move body to random position
+        body->vectVel = QPointF(0,0); //zero velocity vector
     }
 }
 
@@ -119,23 +105,26 @@ void GraphWidget::zoomOut(){
 
 
 void GraphWidget::addBody(int index){
-    Body *planet = new Body(index,table,this);
-    scene()->addItem(planet);
+    Body *body = new Body(index,table,this);
+    bodies.append(body);
+    scene()->addItem(body);
 }
 
 void GraphWidget::removeBody(int index){
-    scene()->removeItem(scene()->items().back());
+    Q_UNUSED(index);
+
+    scene()->removeItem(bodies.back());
+    bodies.pop_back();
 }
 
 
 void GraphWidget::animate(bool a){
+    // Start and stop animation
     if (a){
-        //start timer for animation
         timerId = startTimer(0);
         ElapsedTime.start();
     }
     else{
-        //stop timer for animation
         killTimer(timerId);
         timerId = 0;
     }

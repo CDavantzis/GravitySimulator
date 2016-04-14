@@ -4,6 +4,8 @@
 #include <QGraphicsView>
 #include <QTableWidget>
 #include <QTime>
+#include "mainwindow.h"
+
 class Body;
 
 class GraphWidget : public QGraphicsView
