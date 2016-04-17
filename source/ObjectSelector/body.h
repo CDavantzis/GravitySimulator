@@ -7,7 +7,7 @@
 #include <QTime>
 
 class GraphWidget;
-
+class blank;
 class Body : public QGraphicsItem{
 private:
     int index;
