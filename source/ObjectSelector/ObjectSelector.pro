@@ -15,12 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
         body.cpp \
-        graphwidget.cpp
+        graphwidget.cpp \
+    spaceship.cpp
 
 
 HEADERS  += mainwindow.h \
             body.h \
-            graphwidget.h
+            graphwidget.h \
+    spaceship.h
 
 
 FORMS    += mainwindow.ui
