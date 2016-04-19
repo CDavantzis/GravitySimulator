@@ -6,6 +6,18 @@
 #include <QDebug>
 #include <QTime>
 #include <QThread>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
+
+
+class forceCalculation : public QRunnable{
+private:
+    Body *body;
+public:
+    forceCalculation(Body *body): body(body){}
+    virtual void run(){ body->calculateForces();}
+};
+
 
 GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0){
     //Configure GraphWidget Scene
@@ -14,6 +26,9 @@ GraphWidget::GraphWidget(QWidget *parent): QGraphicsView(parent), timerId(0){
     scene->setSceneRect(-4000, -4000, 8000, 8000);
     setScene(scene);
     QList<Body*> bodies;
+    calc_pool = new QThreadPool(this);
+    calc_pool->setMaxThreadCount(50);
+
 }
 
 
@@ -52,10 +67,13 @@ void GraphWidget::timerEvent(QTimerEvent *event){
     }
     elapsed = ElapsedTime.restart();
     int framerate = int((double(elapsed)/20)*100);
-    qDebug() << framerate;
+    //qDebug() << framerate;
 
     foreach (Body *body, bodies)
+        //calc_pool->start(new forceCalculation(body));
         body->calculateForces(); //Calculate New Postions
+    //calc_pool->waitForDone();
+
     foreach (Body *body, bodies)
         body->step();            //Move To New Postition
 
