@@ -5,6 +5,8 @@
 #include <QTableWidget>
 #include <QTime>
 #include "mainwindow.h"
+#include <QThread>
+#include <QtConcurrent/QtConcurrent>
 
 class Body;
 
@@ -47,7 +49,7 @@ protected:
     void scaleView(qreal scaleFactor);
 
 private:
-
+ QThreadPool *calc_pool;
 };
 
 #endif // GRAPHWIDGET_H
