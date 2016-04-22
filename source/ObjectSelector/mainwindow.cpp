@@ -1,18 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "body.h"
-
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
-    ui->graphicsView->table = ui->tableWidget;
-
+    ui->graphicsView->setupTable(ui->tableWidget);
     //set values to initial .ui conditions
-    ui->graphicsView->forceOption_cumulative = ui->checkBox_forceOption_cumulative->isChecked();
-    ui->graphicsView->forceOption_reverse = ui->checkBox_forceOption_reverse->isChecked();
-    ui->graphicsView->bodies_collide = ui->checkBox_bodies_collide->isChecked();
+    Body::canCollide =  ui->checkBox_bodies_collide->isChecked();
 
     ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing,ui->checkBox_antialiasing->checkState());
-    ui->graphicsView->dt = 1*pow(10,ui->lineEdit_dt->text().toInt());
     ui->statusBar->showMessage(tr("Ready"));
     //Make Connections
     connect(ui->pushButton_randomize, SIGNAL (released()),this->ui->graphicsView, SLOT(shuffle()));
@@ -27,7 +21,7 @@ void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
     int row = ui->tableWidget->currentRow();
     int col = ui->tableWidget->currentColumn();
     double value = (reinterpret_cast<QLineEdit*>(pLineEdit)->text()).toDouble();
-    Body *body = ui->graphicsView->bodies[row];
+    Body *body = ui->graphicsView->myScene->bodies[row];
     switch(col) {
         case 0:
             body->setMass(value);
@@ -39,19 +33,17 @@ void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
             body->setY(-value);
             break;
         case 3:
-            body->vectVel.setX(value);
+            body->vel.setX(value);
             break;
         case 4:
-            body->vectVel.setY(-value);
+            body->vel.setY(-value);
             break;
     }
      ui->graphicsView->scene()->update();
 }
 
 //lineEdit Slots
-void MainWindow::on_lineEdit_dt_textChanged(const QString &arg1){
-    ui->graphicsView->dt = 1 * pow(10, arg1.toInt());
-}
+
 //Start animation
 void MainWindow::on_pushButton_run_clicked(){
     ui->graphicsView->animate(true);
@@ -66,24 +58,16 @@ void MainWindow::on_pushButton_stop_clicked(){
 }
 
 void MainWindow::on_pushButton_add_row_clicked(){
-    ui->graphicsView->addBody();
+    ui->graphicsView->myScene->addBody();
 }
 void MainWindow::on_pushButton_remove_row_clicked(){
-    ui->graphicsView->removeBody();
+    ui->graphicsView->myScene->removeBody();
 }
 
 
 //checkBox Slots
-void MainWindow::on_checkBox_forceOption_cumulative_toggled(bool checked){
-    //If true velocity force will be cumulative.
-    ui->graphicsView->forceOption_cumulative = checked;
-}
-void MainWindow::on_checkBox_forceOption_reverse_toggled(bool checked){
-    //If true the objects will repel instead of attract.
-    ui->graphicsView->forceOption_reverse = checked;
-}
 void MainWindow::on_checkBox_bodies_collide_toggled(bool checked){
-    ui->graphicsView->bodies_collide = checked;
+    Body::canCollide = checked;
 }
 void MainWindow::on_checkBox_antialiasing_toggled(bool checked){
     //If true the graphicsview will render in high quality.

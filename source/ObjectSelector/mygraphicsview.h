@@ -1,5 +1,5 @@
-#ifndef GRAPHWIDGET_H
-#define GRAPHWIDGET_H
+#ifndef MYGRAPHICSVIEW_H
+#define MYGRAPHICSVIEW_H
 
 #include <QGraphicsView>
 #include <QTableWidget>
@@ -9,25 +9,20 @@
 #include <QtConcurrent/QtConcurrent>
 
 class Body;
-
-class GraphWidget : public QGraphicsView
+class MyGraphicsView : public QGraphicsView
 {
     Q_OBJECT
 
 public:
-    GraphWidget(QWidget *parent = 0);
-
-    void addBody();
-    void removeBody();
-    void removeBody(Body *body);
-
+    MyGraphicsView(QWidget *parent = 0);
+    MyGraphicsScene *myScene;
     qreal dt;
 
-    Body getBody(int index);
-    QList<Body*> bodies;
     int timerId;
     QTime ElapsedTime;
     void animate(bool a);
+
+    void setupTable(QTableWidget *table );
     QTableWidget *table;
 
     bool forceOption_cumulative; //If true velocity force will be cumulative.
@@ -48,8 +43,6 @@ protected:
     void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
     void scaleView(qreal scaleFactor);
 
-private:
- QThreadPool *calc_pool;
 };
 
 #endif // GRAPHWIDGET_H

@@ -15,12 +15,15 @@ CONFIG += c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
         body.cpp \
-        graphwidget.cpp
-
+        bodylauncher.cpp \
+        mygraphicsview.cpp \
+        mygraphicsscene.cpp
 
 HEADERS  += mainwindow.h \
             body.h \
-            graphwidget.h
+            bodylauncher.h \
+            mygraphicsview.h \
+            mygraphicsscene.h
 
 
 FORMS    += mainwindow.ui

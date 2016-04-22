@@ -1,7 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QMainWindow>
-#include <QGraphicsScene>
+#include <QtWidgets/QLineEdit>
+#include "mygraphicsscene.h"
+#include "body.h"
 
 namespace Ui {
     class MainWindow;
@@ -16,13 +18,10 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QGraphicsScene *scene;
+    MyGraphicsScene *scene;
 
 private slots:
     void OnTblItemsCommitData(QWidget* pLineEdit);
-
-    //lineEdit Slots
-    void on_lineEdit_dt_textChanged(const QString &arg1);
 
     //pushButton Slots
     void on_pushButton_run_clicked();
@@ -31,8 +30,6 @@ private slots:
     void on_pushButton_remove_row_clicked();
 
     //checkBox Slots
-    void on_checkBox_forceOption_cumulative_toggled(bool checked);
-    void on_checkBox_forceOption_reverse_toggled(bool checked);
     void on_checkBox_antialiasing_toggled(bool checked);
     void on_checkBox_bodies_collide_toggled(bool checked);
 };
