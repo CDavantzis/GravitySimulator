@@ -6,6 +6,8 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <cmath>
+
+
 const qreal G = 6.674e-11;
 
 bool Body::canCollide;
@@ -54,7 +56,6 @@ QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
         this->table_items[2]->setText(QString::number(-pos().y()));   //Location Y
         this->table_items[3]->setText(QString::number(vel.x()));  //Velocity X
         this->table_items[4]->setText(QString::number(-vel.y())); //Velocity Y
-        //this->update();
     }
     return QGraphicsItem::itemChange(change, value);
 }
@@ -99,6 +100,7 @@ void Body::moveToNewPos(){
     myScene->removeBody(this);
     delete this;
 }
+
 inline QPointF Body::calcPosChangeFrom(Body *other){
     //Calulate position change from other body
     if (this == other)

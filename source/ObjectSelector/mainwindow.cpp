@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
     ui->graphicsView->setupTable(ui->tableWidget);
@@ -42,7 +43,6 @@ void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
      ui->graphicsView->scene()->update();
 }
 
-//lineEdit Slots
 
 //Start animation
 void MainWindow::on_pushButton_run_clicked(){
