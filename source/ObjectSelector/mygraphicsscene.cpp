@@ -10,17 +10,13 @@
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
 
-
-
 class forceCalculation : public QRunnable{
 private:
     Body *body;
 public:
     forceCalculation(Body *body): body(body){}
-    virtual void run(){ body->bruteforcePos();}
+    virtual void run(){ body->getNewPos();}
 };
-
-
 
 MyGraphicsScene::MyGraphicsScene(QObject* parent, MyGraphicsView*myView): QGraphicsScene(parent), myView(myView){
     setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -28,8 +24,7 @@ MyGraphicsScene::MyGraphicsScene(QObject* parent, MyGraphicsView*myView): QGraph
     body_launcher = new BodyLauncher();
     this->addItem(body_launcher);
     calc_pool = new QThreadPool(this);
-    calc_pool->setMaxThreadCount(8);
-
+    calc_pool->setMaxThreadCount(200);
 }
 
 void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
@@ -37,12 +32,10 @@ void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
     case Qt::RightButton:
         body_launcher->grab(event);
         break;
-
     default:
         QGraphicsScene::mousePressEvent(event);
     }
 }
-
 
 void MyGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event){
     mousePos = event->scenePos();
@@ -53,7 +46,6 @@ void MyGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event){
         QGraphicsScene::mouseMoveEvent(event);
     }
 }
-
 
 void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
     QPointF pos;
@@ -68,19 +60,15 @@ void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
     }
 }
 
-void MyGraphicsScene::calculateForces(){
-    foreach (Body *body, bodies){
-        body->bruteforcePos();
-        //body->attract();
-    }
-    //calc_pool->waitForDone();
-}
+
 
 void MyGraphicsScene::step(){
     foreach (Body *body, bodies)
-        body->step();            //Move To New Postition
+        calc_pool->start(new forceCalculation(body));
+    calc_pool->waitForDone();
+    foreach (Body *body, bodies)
+        body->moveToNewPos();
 }
-
 
 void MyGraphicsScene::addBody(){
     int cols = table->columnCount();
@@ -92,7 +80,6 @@ void MyGraphicsScene::addBody(){
     bodies.append(body);
     addItem(body);
 }
-
 
 void MyGraphicsScene::addBody(QPointF pos, QPointF vel){
     int cols = table->columnCount();
@@ -116,7 +103,6 @@ void MyGraphicsScene::removeBody(){
         bodies.pop_back();
     }
 }
-
 void MyGraphicsScene::removeBody(Body *body){
     int index = bodies.indexOf(body);
     table->removeRow(index);

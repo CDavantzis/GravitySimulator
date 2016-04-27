@@ -64,7 +64,6 @@ void MainWindow::on_pushButton_remove_row_clicked(){
     ui->graphicsView->myScene->removeBody();
 }
 
-
 //checkBox Slots
 void MainWindow::on_checkBox_bodies_collide_toggled(bool checked){
     Body::canCollide = checked;

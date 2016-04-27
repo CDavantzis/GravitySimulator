@@ -9,14 +9,11 @@
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
 
-
-
 MyGraphicsView::MyGraphicsView(QWidget *parent): QGraphicsView(parent), timerId(0){
     //Configure GraphWidget Scene
     myScene = new MyGraphicsScene(this,this);
     setScene(myScene);
 }
-
 
 void MyGraphicsView::setupTable(QTableWidget *table ){
     this->table = table;
@@ -36,15 +33,11 @@ void MyGraphicsView::keyPressEvent(QKeyEvent *event){
     }
 }
 
-
 void MyGraphicsView::timerEvent(QTimerEvent *event){
     Q_UNUSED(event);
-    Body::dT = ElapsedTime.restart()*7500;
-    myScene->calculateForces();
+    Body::dT = ElapsedTime.restart()*10000;
     myScene->step();
-
 }
-
 
 #ifndef QT_NO_WHEELEVENT
 void MyGraphicsView::wheelEvent(QWheelEvent *event)
@@ -96,4 +89,3 @@ void MyGraphicsView::animate(bool a){
         timerId = 0;
     }
 }
-
