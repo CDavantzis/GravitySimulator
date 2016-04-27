@@ -11,9 +11,6 @@ const qreal G = 6.674e-11;
 bool Body::canCollide;
 int Body::dT;
 
-
-
-
 Body::Body(MyGraphicsScene *myScene, int index):myScene(myScene){
     this->index = index;
     int column_count = myScene->table->columnCount();
@@ -61,9 +58,6 @@ QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
     }
     return QGraphicsItem::itemChange(change, value);
 }
-
-
-
 
 void Body::collide(Body *other){
     //Collide this with other;

@@ -60,8 +60,6 @@ void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
     }
 }
 
-
-
 void MyGraphicsScene::step(){
     foreach (Body *body, bodies)
         calc_pool->start(new forceCalculation(body));
