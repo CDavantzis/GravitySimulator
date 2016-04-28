@@ -6,8 +6,6 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <cmath>
-
-
 const qreal G = 6.674e-11;
 
 bool Body::canCollide;
@@ -25,6 +23,7 @@ Body::Body(MyGraphicsScene *myScene, int index):myScene(myScene){
     setZValue(-1);
     setPos(0,0);
     setMass(100);
+    setRadius(15);
     vel = QPointF(0,0); //zero velocity vector
     exist = true;
 }
@@ -44,18 +43,24 @@ void Body::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 void Body::setMass(qreal mass){
     //Set body mass;
     this->mass = mass;
-    this->radius = mass / 10;
     this->table_items[0]->setText(QString::number(mass));
+    update();
+}
+
+void Body::setRadius(qreal radius){
+    this->radius = radius;
+    this->table_items[1]->setText(QString::number(radius));
     update();
 }
 
 QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
     if (change == ItemPositionHasChanged){
         //Update table cell values
-        this->table_items[1]->setText(QString::number(pos().x()));    //Location X
-        this->table_items[2]->setText(QString::number(-pos().y()));   //Location Y
-        this->table_items[3]->setText(QString::number(vel.x()));  //Velocity X
-        this->table_items[4]->setText(QString::number(-vel.y())); //Velocity Y
+        this->table_items[2]->setText(QString::number(pos().x()));    //Location X
+        this->table_items[3]->setText(QString::number(-pos().y()));   //Location Y
+        this->table_items[4]->setText(QString::number(vel.x()));  //Velocity X
+        this->table_items[5]->setText(QString::number(-vel.y())); //Velocity Y
+        //this->update();
     }
     return QGraphicsItem::itemChange(change, value);
 }
@@ -64,11 +69,13 @@ void Body::collide(Body *other){
     //Collide this with other;
     if (this->mass >=other->mass){
         this->setMass(this->mass + other->mass);
+        this->setRadius(this->radius + other->radius);
         this->vel = ((this->mass*this->vel)+(other->mass*other->vel))/(this->mass+other->mass);     //inelastic collision v=(m1*v1+m2*v2)/(m1+m2)
         other->exist = false;
     }
     else{
         other->setMass(this->mass + other->mass);
+        other->setRadius(this->radius + other->radius);
         other->vel = ((this->mass*this->vel)+(other->mass*other->vel))/(this->mass+other->mass);    //inelastic collision v=(m1*v1+m2*v2)/(m1+m2)
         this->exist = false;
     }
@@ -100,7 +107,6 @@ void Body::moveToNewPos(){
     myScene->removeBody(this);
     delete this;
 }
-
 inline QPointF Body::calcPosChangeFrom(Body *other){
     //Calulate position change from other body
     if (this == other)
