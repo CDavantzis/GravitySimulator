@@ -27,15 +27,18 @@ void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
             body->setMass(value);
             break;
         case 1:
-            body->setX(value);
+            body->setRadius(value);
             break;
         case 2:
-            body->setY(-value);
+            body->setX(value);
             break;
         case 3:
-            body->vel.setX(value);
+            body->setY(-value);
             break;
         case 4:
+            body->vel.setX(value);
+            break;
+        case 5:
             body->vel.setY(-value);
             break;
     }
