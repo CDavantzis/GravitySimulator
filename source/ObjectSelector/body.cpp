@@ -102,6 +102,7 @@ void Body::moveToNewPos(){
     //Move body to newPos;
     if(exist){
         setPos(newPos); //Move to newPos
+        update(); //update everytime to fix collision glitches.
         return;
     }
     myScene->removeBody(this);
