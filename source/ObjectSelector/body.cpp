@@ -7,7 +7,6 @@
 #include <QStyleOption>
 #include <cmath>
 
-#include <QDebug>
 
 const qreal G = 6.674e-11;
 
@@ -96,7 +95,6 @@ void Body::moveToNewPos(){
     //Move body to newPos;
     if(exist){
         setPos(newPos); //Move to newPos
-        update();       //always redraw fixes collision graphics glitches but slows down program.
         return;
     }
     myScene->removeBody(this);
