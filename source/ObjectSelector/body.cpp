@@ -44,7 +44,7 @@ void Body::setMass(qreal mass){
     //Set body mass;
     this->mass = mass;
     this->table_items[0]->setText(QString::number(mass));
-    update();
+    //update();
 }
 
 void Body::setRadius(qreal radius){
