@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QFileDialog>
+
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
     ui->graphicsView->setupTable(ui->tableWidget);
@@ -77,3 +79,21 @@ void MainWindow::on_checkBox_antialiasing_toggled(bool checked){
 }
 
 
+
+void MainWindow::on_actionSave_triggered()
+{
+    QString filename = QFileDialog::getSaveFileName(this, tr("SaveFile"), "C://", "All Files (*.*);;Text Files (*.txt);;Excel Files (*.xlsx *.csv)");
+
+    if(!filename.isEmpty()){
+        QFile file(filename);
+        if(!file.open(QIODevice::WriteOnly)){
+            //Error
+        }
+        else{
+            QTextStream stream(&file);
+            stream << "Table with Planets";
+            stream.flush();
+            file.close();
+        }
+    }
+}
