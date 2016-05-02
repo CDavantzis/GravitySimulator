@@ -23,7 +23,7 @@ void BodyLauncher::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QW
 
 void BodyLauncher::grab(QGraphicsSceneMouseEvent *event){
     setVisible(true);
-    start =  end = event->scenePos();
+    start = end = event->scenePos();
     update();
 }
 

@@ -30,7 +30,7 @@ public:
 
     QPointF vel;  //Body velocity (vector);
     void setMass(qreal mass); //Set body mass;
-
+    void setRadius(qreal radius);
     void getNewPos();           //Use bruteforce for N-Body calculations;
     void moveToNewPos();           //Move body to newPos;
 
