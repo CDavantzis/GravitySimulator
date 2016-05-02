@@ -6,12 +6,15 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <cmath>
+#include <thread>
+#include <mutex>
+
 const qreal G = 6.674e-11;
 
 bool Body::canCollide;
 int Body::dT;
 
-
+std::mutex m1;
 
 
 Body::Body(MyGraphicsScene *myScene, int index):myScene(myScene){
@@ -62,21 +65,16 @@ QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
     return QGraphicsItem::itemChange(change, value);
 }
 
-
-
-
 void Body::collide(Body *other){
     //Collide this with other;
-    if (this->mass >=other->mass){
+    m1.lock();
+    if(this->exist && other->exist) {
         this->setMass(this->mass + other->mass);
         this->vel = ((this->mass*this->vel)+(other->mass*other->vel))/(this->mass+other->mass);     //inelastic collision v=(m1*v1+m2*v2)/(m1+m2)
         other->exist = false;
     }
-    else{
-        other->setMass(this->mass + other->mass);
-        other->vel = ((this->mass*this->vel)+(other->mass*other->vel))/(this->mass+other->mass);    //inelastic collision v=(m1*v1+m2*v2)/(m1+m2)
-        this->exist = false;
-    }
+    m1.unlock();
+   // }
 }
 
 
@@ -111,8 +109,9 @@ inline QPointF Body::calcPosChangeFrom(Body *other){
         return QPointF(0,0);
     QPointF vectDist = mapToItem(other,0,0); //Distance Vector.
     qreal dist = sqrt(pow(vectDist.x(), 2) + pow(vectDist.y(), 2)); //Distance between bodies
-    if ((canCollide) && (dist <= this->radius+other->radius))
+    if ((canCollide) && (dist <= this->radius+other->radius)) {
         collide(other);
+    }
     dist = qMax(dist, this->radius+other->radius); //Soften distance
     vel += dT*((G*((this->mass*other->mass)/(dist*dist))) * vectDist / dist)/ mass;
     return dT*vel;
