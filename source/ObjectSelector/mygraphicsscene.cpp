@@ -6,11 +6,25 @@
 #include "qdebug.h"
 #include "body.h"
 
+#include <QThread>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
+
+class forceCalculation : public QRunnable{
+private:
+    Body *body;
+public:
+    forceCalculation(Body *body): body(body){}
+    virtual void run(){ body->getNewPos();}
+};
+
 MyGraphicsScene::MyGraphicsScene(QObject* parent, MyGraphicsView*myView): QGraphicsScene(parent), myView(myView){
     setItemIndexMethod(QGraphicsScene::NoIndex);
     setSceneRect(-4000, -4000, 8000, 8000);
     body_launcher = new BodyLauncher();
     this->addItem(body_launcher);
+    calc_pool = new QThreadPool(this);
+    calc_pool->setMaxThreadCount(200);
 }
 
 void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
@@ -48,7 +62,8 @@ void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
 
 void MyGraphicsScene::step(){
     foreach (Body *body, bodies)
-        body->getNewPos();
+        calc_pool->start(new forceCalculation(body));
+    calc_pool->waitForDone();
     foreach (Body *body, bodies)
         body->moveToNewPos();
 }
