@@ -6,10 +6,14 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <cmath>
+#include <mutex>
 const qreal G = 6.674e-11;
+const qreal PI = 3.14159265359;
 
 bool Body::canCollide;
 int Body::dT;
+
+static std::mutex m1;
 
 Body::Body(MyGraphicsScene *myScene, int index):myScene(myScene){
     this->index = index;
@@ -67,18 +71,24 @@ QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
 
 void Body::collide(Body *other){
     //Collide this with other;
-    if (this->mass >=other->mass){
-        this->setMass(this->mass + other->mass);
-        this->setRadius(this->radius + other->radius);
-        this->vel = ((this->mass*this->vel)+(other->mass*other->vel))/(this->mass+other->mass);     //inelastic collision v=(m1*v1+m2*v2)/(m1+m2)
-        other->exist = false;
+
+    m1.lock();
+    if(this->exist && other->exist) {
+        qreal newRadius = sqrt(this->radius*this->radius + other->radius*other->radius);
+        if (this->radius >=other->radius){
+            this->setMass(this->mass + other->mass);
+            this->setRadius(newRadius);
+            this->vel = ((this->mass*this->vel)+(other->mass*other->vel))/(this->mass+other->mass);     //inelastic collision v=(m1*v1+m2*v2)/(m1+m2)
+            other->exist = false;
+        }
+        else{
+            other->setMass(this->mass + other->mass);
+            other->setRadius(newRadius);
+            other->vel = ((this->mass*this->vel)+(other->mass*other->vel))/(this->mass+other->mass);    //inelastic collision v=(m1*v1+m2*v2)/(m1+m2)
+            this->exist = false;
+        }
     }
-    else{
-        other->setMass(this->mass + other->mass);
-        other->setRadius(this->radius + other->radius);
-        other->vel = ((this->mass*this->vel)+(other->mass*other->vel))/(this->mass+other->mass);    //inelastic collision v=(m1*v1+m2*v2)/(m1+m2)
-        this->exist = false;
-    }
+    m1.unlock();
 }
 
 
