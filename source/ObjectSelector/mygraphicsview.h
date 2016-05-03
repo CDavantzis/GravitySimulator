@@ -8,15 +8,15 @@
 
 class MyGraphicsView : public QGraphicsView{
 
-public:
-    MyGraphicsView(QWidget *parent = 0);
-
+private:
     int timerId;
     QTime dT;
-    void animate(bool a);
-
     void zoomIn();
     void zoomOut();
+
+public:
+    MyGraphicsView(QWidget *parent = 0);
+    void animate(bool a);
 
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;

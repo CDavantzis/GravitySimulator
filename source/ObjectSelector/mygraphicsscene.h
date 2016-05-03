@@ -7,6 +7,10 @@
 class Launcher;
 
 class MyGraphicsScene : public QGraphicsScene{
+
+private:
+   Launcher *launcher;
+
 public:
     MyGraphicsScene(QObject * p = NULL);
 
@@ -15,8 +19,6 @@ protected:
    void mouseMoveEvent(QGraphicsSceneMouseEvent* event)    Q_DECL_OVERRIDE;
    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
 
-private:
-   Launcher *launcher;
 };
 
 #endif

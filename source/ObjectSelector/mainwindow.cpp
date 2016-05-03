@@ -85,7 +85,6 @@ void MainWindow::on_actionExportCSV_triggered(){
     }
 }
 
-void MainWindow::on_actionImportCSV_triggered()
-{
+void MainWindow::on_actionImportCSV_triggered(){
 
 }
