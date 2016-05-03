@@ -5,11 +5,11 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QThread>
 #include <QtConcurrent/QtConcurrent>
-
-#include "bodylauncher.h"
+#include <QFuture>
 
 class Body;
 class MyGraphicsView;
+class Launcher;
 
 class MyGraphicsScene : public QGraphicsScene{
 public:
@@ -21,7 +21,7 @@ protected:
    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
-   BodyLauncher *body_launcher;
+   Launcher *launcher;
 };
 
 #endif

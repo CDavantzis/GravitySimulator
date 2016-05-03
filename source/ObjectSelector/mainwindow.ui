@@ -116,16 +116,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Bodies:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QCheckBox" name="checkBox_bodies_collide">
         <property name="text">
-         <string>Collide</string>
+         <string>Body Collision</string>
         </property>
        </widget>
       </item>
@@ -284,11 +277,6 @@
   <action name="actionSave">
    <property name="text">
     <string>Export</string>
-   </property>
-  </action>
-  <action name="actionSave_Log">
-   <property name="text">
-    <string>Save Log</string>
    </property>
   </action>
  </widget>

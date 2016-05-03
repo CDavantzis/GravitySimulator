@@ -1,13 +1,4 @@
-#include "body.h"
 #include "mygraphicsview.h"
-#include "mygraphicsscene.h"
-#include <math.h>
-#include <QKeyEvent>
-#include <QDebug>
-#include <QTime>
-#include <QThread>
-#include <QFuture>
-#include <QtConcurrent/QtConcurrent>
 
 MyGraphicsView::MyGraphicsView(QWidget *parent): QGraphicsView(parent), timerId(0){
     setScene(new MyGraphicsScene(this));

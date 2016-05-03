@@ -15,15 +15,15 @@ CONFIG += c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
         body.cpp \
-        bodylauncher.cpp \
         mygraphicsview.cpp \
-        mygraphicsscene.cpp
+        mygraphicsscene.cpp \
+        launcher.cpp
 
 HEADERS  += mainwindow.h \
             body.h \
-            bodylauncher.h \
             mygraphicsview.h \
-            mygraphicsscene.h
+            mygraphicsscene.h \
+    launcher.h
 
 
 FORMS    += mainwindow.ui

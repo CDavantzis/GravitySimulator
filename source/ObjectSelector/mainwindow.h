@@ -18,7 +18,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    MyGraphicsScene *scene;
 
 private slots:
     void OnTblItemsCommitData(QWidget* pLineEdit);

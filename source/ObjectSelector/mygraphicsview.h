@@ -7,6 +7,14 @@
 #include "mainwindow.h"
 #include <QThread>
 #include <QtConcurrent/QtConcurrent>
+#include "mygraphicsscene.h"
+#include <math.h>
+#include <QKeyEvent>
+#include <QDebug>
+#include <QTime>
+#include <QThread>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
 
 class Body;
 class MyGraphicsView : public QGraphicsView

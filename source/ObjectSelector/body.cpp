@@ -1,12 +1,5 @@
 #include "body.h"
 #include "mygraphicsview.h"
-#include "mygraphicsscene.h"
-
-#include <QGraphicsScene>
-#include <QPainter>
-#include <QStyleOption>
-#include <cmath>
-
 
 const qreal G = 6.674e-11;
 const qreal PI = 3.14159265359;
@@ -31,8 +24,6 @@ void Body::push_back(QPointF pos, QPointF vel){
     view->scene()->addItem(body);
 }
 
-
-
 void Body::pop_back(){
     if (table->rowCount() > 0){
         list.last()->remove();
@@ -41,7 +32,7 @@ void Body::pop_back(){
 
 void Body::step(){
     foreach(Body *body, list)
-        body->getNewPos();
+        body->newPos = body->getNewPos();
     foreach(Body *body, list)
         body->updatePos();
 }
@@ -104,40 +95,26 @@ QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
 }
 
 void Body::collide(Body *other){
-    //Collide this with other;
-
-    if(this->exist && other->exist) {
-        qreal newRadius = sqrt(this->radius*this->radius + other->radius*other->radius);
-        if (this->radius >=other->radius){
-            this->setMass(this->mass + other->mass);
-            this->setRadius(newRadius);
-            this->vel = ((this->mass*this->vel)+(other->mass*other->vel))/(this->mass+other->mass);     //inelastic collision v=(m1*v1+m2*v2)/(m1+m2)
-            other->exist = false;
-        }
-        else{
-            other->setMass(this->mass + other->mass);
-            other->setRadius(newRadius);
-            other->vel = ((this->mass*this->vel)+(other->mass*other->vel))/(this->mass+other->mass);    //inelastic collision v=(m1*v1+m2*v2)/(m1+m2)
-            this->exist = false;
-        }
-    }
+    //Collide this body with other body;
+    setMass(this->mass + other->mass);
+    setRadius(sqrt(this->radius*this->radius + other->radius*other->radius));
+    vel = ((this->mass*this->vel)+(other->mass*other->vel))/(this->mass+other->mass);
+    other->exist = false;
 }
 
 
-void Body::getNewPos(){
-    //Use bruteforce for N-Body calculations;
+inline QPointF Body::getNewPos(){
+    //Get next body position (BruteForce);
     if (scene()->mouseGrabberItem() == this) {
-        newPos = pos();
-        return;
+        return pos();
     }
     if (list.count() == 1){
-        newPos = pos() - dT*vel;
-        return;
+        return pos() - dT*vel;
     }
     QPointF PosChange = QPointF(0,0); //Position change vector.
     foreach (Body *body, list)
         PosChange += calcPosChangeFrom(body);
-    newPos = pos() - PosChange;
+    return pos() - PosChange;
 }
 
 void Body::updatePos(){
@@ -157,13 +134,19 @@ inline QPointF Body::calcPosChangeFrom(Body *other){
         return QPointF(0,0);
     QPointF vectDist = mapToItem(other,0,0); //Distance Vector.
     qreal dist = sqrt(pow(vectDist.x(), 2) + pow(vectDist.y(), 2)); //Distance between bodies
-    if ((canCollide) && (dist <= this->radius+other->radius))
-        collide(other);
+
+    if ((canCollide) && (dist<=this->radius+other->radius) && (this->exist) && (other->exist)){
+        if (this->radius >=other->radius){
+            this->collide(other);
+        }
+        else{
+            other->collide(this);
+        }
+    }
     dist = qMax(dist, this->radius+other->radius); //Soften distance
     vel += dT*((G*((this->mass*other->mass)/(dist*dist))) * vectDist / dist)/ mass;
     return dT*vel;
 }
-
 
 inline void Body::updateTable(){
     column[2]->setText(QString::number(pos().x()));  //Location X

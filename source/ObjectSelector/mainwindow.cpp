@@ -61,6 +61,8 @@ void MainWindow::on_pushButton_stop_clicked(){
     ui->pushButton_run->setEnabled(true);
     ui->pushButton_stop->setEnabled(false);
 }
+
+
 void MainWindow::on_pushButton_add_row_clicked(){
     Body::push_back();
 }

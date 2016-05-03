@@ -1,13 +1,9 @@
-#ifndef BODYLAUNCHER_H
-#define BODYLAUNCHER_H
-#include <QTableWidget>
-#include <QGraphicsItem>
-#include <QList>
-#include <cmath>
-#include <QTime>
-#include <QGraphicsSceneMouseEvent>
+#ifndef LAUNCHER_H
+#define LAUNCHER_H
 
-class BodyLauncher : public QGraphicsItem{
+#include <QGraphicsItem>
+
+class Launcher : public QGraphicsItem{
 private:
     QPointF start;
     QPointF end;
@@ -15,7 +11,7 @@ private:
     QRectF boundingRect() const Q_DECL_OVERRIDE;
 
 public:
-    BodyLauncher();
+    Launcher();
     void grab(QPointF Pos);
     void stretch(QPointF Pos);
     void release();
