@@ -27,7 +27,7 @@ private:
 public:
     Body();
     QRectF  boundingRect() const Q_DECL_OVERRIDE;
-    QPointF calcPosChangeFrom(Body *other);
+    QPointF PosChangeFrom(Body *other);
     QPointF vel;
     void setMass(qreal mass);
     void setRadius(qreal radius);

@@ -123,7 +123,7 @@ inline QPointF Body::getNewPos(){
     }
     QPointF PosChange = QPointF(0,0); //Position change vector.
     foreach (Body *body, list)
-        PosChange += calcPosChangeFrom(body);
+        PosChange += PosChangeFrom(body);
     return pos() - PosChange;
 }
 
@@ -138,7 +138,7 @@ inline void Body::updatePos(){
     delete this;
 }
 
-inline QPointF Body::calcPosChangeFrom(Body *other){
+inline QPointF Body::PosChangeFrom(Body *other){
     //Calulate position change from other body
     if (this == other)
         return QPointF(0,0);
