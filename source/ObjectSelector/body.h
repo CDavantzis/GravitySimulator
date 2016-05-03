@@ -39,6 +39,7 @@ public:
     static MyGraphicsView *view;
     static void push_back();
     static void push_back(QPointF pos, QPointF vel);
+    static void push_back(QList<QString> body_data);
     static void pop_back();
     static void step();
     static void shuffle();

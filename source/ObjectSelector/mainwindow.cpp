@@ -68,25 +68,47 @@ void MainWindow::on_pushButton_randomize_clicked(){
     Body::shuffle();
 }
 
-void MainWindow::on_actionExportCSV_triggered(){
-    //Export CSV from Table
-    QString filename = QFileDialog::getSaveFileName(this, tr("SaveFile"), "C://", "All Files (*.*);;Text Files (*.txt);;Excel Files (*.xlsx *.csv)");
-
-    if(!filename.isEmpty()){
-        QFile file(filename);
-        if(!file.open(QIODevice::WriteOnly)){
-            //Error
+void MainWindow::on_actionExportTXT_triggered(){
+    //Export TXT file from Table
+    QList<QString> list;
+    QFileDialog Dialog;
+    Dialog.setDefaultSuffix("csv");
+    QString filename = Dialog.getSaveFileName(this, tr("SaveFile"), "C://", "Project File(*.txt)");
+    QFile f(filename);
+    if (!filename.isEmpty() && (f.open(QFile::WriteOnly | QFile::Truncate)))    {
+        QTextStream out(&f);
+        out << ui->tableWidget->rowCount() << "\n";
+        out << ui->tableWidget->columnCount() << "\n";
+        for( int r = 0; r < ui->tableWidget->rowCount(); ++r ){
+            for( int c = 0; c < ui->tableWidget->columnCount(); ++c ){
+                out << ui->tableWidget->item(r,c)->text() << "\n";
+            }
         }
-        else{
-            QTextStream stream(&file);
-            stream << "Table with Planets";
-            stream.flush();
-            file.close();
-        }
+        f.close();
     }
 }
 
-void MainWindow::on_actionImportCSV_triggered(){
-    //Import CSV into Table
 
+
+void MainWindow::on_actionImportTXT_triggered(){
+    //Import TXT file into Table
+    QFileDialog Dialog;
+    QString filename = Dialog.getOpenFileName(this, tr("Open File"), "C://", "Project File (*.txt)");
+    QFile f(filename);
+    QTextStream out(&f);
+    if (!filename.isEmpty() && (f.open(QFile::ReadOnly | QFile::Truncate)))    {
+        while(Body::list.length()>0){
+            Body::pop_back();
+        }
+        int rows = f.readLine().trimmed().toInt();
+        int cols = f.readLine().trimmed().toInt();
+        for( int r = 0; r < rows; ++r ){
+            QList<QString> body_data;
+            for( int c = 0; c < cols; ++c ){
+                body_data.append(f.readLine().trimmed());
+            }
+            Body::push_back(body_data);
+        }
+        f.close();
+    }
 }

@@ -22,7 +22,20 @@ void Body::push_back(QPointF pos, QPointF vel){
     body->setPos(pos);
     body->vel = vel;
     view->scene()->addItem(body);
+    body->updateTable();
 }
+
+void Body::push_back(QList<QString> body_data){
+    //Static: Push body to the end of the list;
+    Body *body = new Body();
+    body->setMass(body_data[0].toDouble());
+    body->setRadius(body_data[1].toDouble());
+    body->setPos(QPointF(body_data[2].toDouble(),-body_data[3].toDouble()));
+    body->vel = QPointF(body_data[4].toDouble(),-body_data[5].toDouble());
+    view->scene()->addItem(body);
+    body->updateTable();
+}
+
 
 void Body::pop_back(){
     //Static: Remove body from the end of the list;
