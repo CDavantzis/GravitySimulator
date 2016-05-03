@@ -149,7 +149,7 @@ inline QPointF Body::PosChangeFrom(Body *other){
     QPointF vectDist = mapToItem(other,0,0); //Distance Vector.
     qreal dist = sqrt(pow(vectDist.x(), 2) + pow(vectDist.y(), 2)); //Distance between bodies
     if ((canCollide) && (dist<=this->radius+other->radius) && (this->exist) && (other->exist)){
-        if (this->radius >=other->radius){
+        if (this->radius >= other->radius){
             this->collide(other);
         }
         else{

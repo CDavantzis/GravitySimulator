@@ -19,6 +19,7 @@ void Launcher::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidge
 void Launcher::grab(QPointF Pos){
     setVisible(true);
     start = end = Pos;
+    update();
 }
 
 void Launcher::stretch(QPointF Pos){
@@ -29,4 +30,5 @@ void Launcher::stretch(QPointF Pos){
 void Launcher::release(){
     setVisible(false);
     Body::push_back(start,(end-start)*.000000025);
+
 }
