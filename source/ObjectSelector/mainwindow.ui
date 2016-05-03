@@ -256,8 +256,8 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionImportCSV"/>
-    <addaction name="actionExportCSV"/>
+    <addaction name="actionImportTXT"/>
+    <addaction name="actionExportTXT"/>
    </widget>
    <addaction name="menuAdd_Object"/>
   </widget>
@@ -269,12 +269,12 @@
     <bool>false</bool>
    </property>
   </widget>
-  <action name="actionImportCSV">
+  <action name="actionImportTXT">
    <property name="text">
     <string>Import</string>
    </property>
   </action>
-  <action name="actionExportCSV">
+  <action name="actionExportTXT">
    <property name="text">
     <string>Export</string>
    </property>

@@ -21,8 +21,8 @@ private:
 
 private slots:
 
-    void on_actionExportCSV_triggered();
-    void on_actionImportCSV_triggered();
+    void on_actionExportTXT_triggered();
+    void on_actionImportTXT_triggered();
 
     void on_checkBox_bodies_collide_toggled(bool checked);
 
