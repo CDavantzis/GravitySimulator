@@ -47,7 +47,6 @@ void MyGraphicsView::scaleView(qreal scaleFactor)
     scale(scaleFactor, scaleFactor);
 }
 
-
 void MyGraphicsView::zoomIn(){
     scaleView(qreal(1.2));
 }

@@ -68,7 +68,6 @@ void MainWindow::on_pushButton_randomize_clicked(){
     Body::shuffle();
 }
 
-
 void MainWindow::on_actionExportCSV_triggered(){
     QString filename = QFileDialog::getSaveFileName(this, tr("SaveFile"), "C://", "All Files (*.*);;Text Files (*.txt);;Excel Files (*.xlsx *.csv)");
 

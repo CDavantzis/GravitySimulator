@@ -68,7 +68,6 @@ Body::Body(){
 }
 
 void Body::remove(){
-
     int index = list.indexOf(this);
     table->removeRow(index);
     list.removeAt(index);
@@ -78,6 +77,12 @@ void Body::remove(){
 QRectF Body::boundingRect() const{
     //outer bounds;
     return QRectF(-radius-1,-radius-1,2*radius+2,2*radius+2);
+}
+
+QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
+    if (change == ItemPositionHasChanged)
+        updateTable();
+    return QGraphicsItem::itemChange(change, value);
 }
 
 void Body::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *){
@@ -98,20 +103,15 @@ void Body::setRadius(qreal value){
     update();
 }
 
-QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
-    if (change == ItemPositionHasChanged)
-        updateTable();
-    return QGraphicsItem::itemChange(change, value);
-}
 
-void Body::collide(Body *other){
+
+inline void Body::collide(Body *other){
     //Collide this body with other body;
     setMass(this->mass + other->mass);
     setRadius(sqrt(this->radius*this->radius + other->radius*other->radius));
     vel = ((this->mass*this->vel)+(other->mass*other->vel))/(this->mass+other->mass);
     other->exist = false;
 }
-
 
 inline QPointF Body::getNewPos(){
     //Get next body position (BruteForce);
@@ -127,7 +127,7 @@ inline QPointF Body::getNewPos(){
     return pos() - PosChange;
 }
 
-void Body::updatePos(){
+inline void Body::updatePos(){
     //Move body to newPos;
     if(exist){
         setPos(newPos); //Move to newPos
@@ -144,7 +144,6 @@ inline QPointF Body::calcPosChangeFrom(Body *other){
         return QPointF(0,0);
     QPointF vectDist = mapToItem(other,0,0); //Distance Vector.
     qreal dist = sqrt(pow(vectDist.x(), 2) + pow(vectDist.y(), 2)); //Distance between bodies
-
     if ((canCollide) && (dist<=this->radius+other->radius) && (this->exist) && (other->exist)){
         if (this->radius >=other->radius){
             this->collide(other);

@@ -35,9 +35,3 @@ void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
             QGraphicsScene::mouseReleaseEvent(event);
     }
 }
-
-
-
-
-
-
