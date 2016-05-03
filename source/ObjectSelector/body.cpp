@@ -19,30 +19,32 @@ QList<Body*>    Body::list;
 QTableWidget*   Body::table;
 MyGraphicsView* Body::view;
 
-
 void Body::push_back(){
     Body *body = new Body();
     view->scene()->addItem(body);
 }
 
-
 void Body::pop_back(){
     if (table->rowCount() > 0){
-        list.last()->Remove();
+        list.last()->remove();
     }
+}
+
+void Body::step(){
+    foreach(Body *body, list)
+        body->getNewPos();
+    foreach(Body *body, list)
+        body->updatePos();
 }
 
 Body::Body(){
     int cols = table->columnCount();
     int rows = table->rowCount();
     table->insertRow(rows);
-
     for (int col = 0; col < cols ; ++col){
         table->setItem(rows,col,new QTableWidgetItem("0"));
         table_items.append(table->item(rows,col));
     }
-
-
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
@@ -55,12 +57,11 @@ Body::Body(){
     list.append(this);
 }
 
-void Body::Remove(){
-
-        int index = list.indexOf(this);
-        table->removeRow(index);
-        list.removeAt(index);
-        this->scene()->removeItem(this);
+void Body::remove(){
+    int index = list.indexOf(this);
+    table->removeRow(index);
+    list.removeAt(index);
+    this->scene()->removeItem(this);
 }
 
 QRectF Body::boundingRect() const{
@@ -76,10 +77,8 @@ void Body::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 }
 
 void Body::setMass(qreal mass){
-    //Set body mass;
     this->mass = mass;
     this->table_items[0]->setText(QString::number(mass));
-    //update();
 }
 
 void Body::setRadius(qreal radius){
@@ -89,20 +88,14 @@ void Body::setRadius(qreal radius){
 }
 
 QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
-    if (change == ItemPositionHasChanged){
-        //Update table cell values
-        this->table_items[2]->setText(QString::number(pos().x()));    //Location X
-        this->table_items[3]->setText(QString::number(-pos().y()));   //Location Y
-        this->table_items[4]->setText(QString::number(vel.x()));  //Velocity X
-        this->table_items[5]->setText(QString::number(-vel.y())); //Velocity Y
-    }
+    if (change == ItemPositionHasChanged)
+        updateTable();
     return QGraphicsItem::itemChange(change, value);
 }
 
 void Body::collide(Body *other){
     //Collide this with other;
 
-    m1.lock();
     if(this->exist && other->exist) {
         qreal newRadius = sqrt(this->radius*this->radius + other->radius*other->radius);
         if (this->radius >=other->radius){
@@ -118,7 +111,6 @@ void Body::collide(Body *other){
             this->exist = false;
         }
     }
-    m1.unlock();
 }
 
 
@@ -138,16 +130,17 @@ void Body::getNewPos(){
     newPos = pos() - PosChange;
 }
 
-void Body::moveToNewPos(){
+void Body::updatePos(){
     //Move body to newPos;
     if(exist){
         setPos(newPos); //Move to newPos
         update(); //update everytime to fix collision glitches.
         return;
     }
-    this->Remove();
+    this->remove();
     delete this;
 }
+
 inline QPointF Body::calcPosChangeFrom(Body *other){
     //Calulate position change from other body
     if (this == other)
@@ -160,3 +153,11 @@ inline QPointF Body::calcPosChangeFrom(Body *other){
     vel += dT*((G*((this->mass*other->mass)/(dist*dist))) * vectDist / dist)/ mass;
     return dT*vel;
 }
+
+inline void Body::updateTable(){
+    this->table_items[2]->setText(QString::number(pos().x()));    //Location X
+    this->table_items[3]->setText(QString::number(-pos().y()));   //Location Y
+    this->table_items[4]->setText(QString::number(vel.x()));      //Velocity X
+    this->table_items[5]->setText(QString::number(-vel.y()));     //Velocity Y
+}
+

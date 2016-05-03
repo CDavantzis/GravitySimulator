@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     Body::canCollide =  ui->checkBox_bodies_collide->isChecked();
 
     ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing,ui->checkBox_antialiasing->checkState());
-    ui->statusBar->showMessage(tr("Ready"));
+
     //Make Connections
     connect(ui->pushButton_randomize, SIGNAL (released()),this->ui->graphicsView, SLOT(shuffle()));
     connect(ui->tableWidget->itemDelegate(), &QAbstractItemDelegate::commitData, this, &OnTblItemsCommitData);
@@ -23,9 +23,9 @@ MainWindow::~MainWindow(){
 }
 
 void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
+    double value = (reinterpret_cast<QLineEdit*>(pLineEdit)->text()).toDouble();
     int row = ui->tableWidget->currentRow();
     int col = ui->tableWidget->currentColumn();
-    double value = (reinterpret_cast<QLineEdit*>(pLineEdit)->text()).toDouble();
     Body *body = Body::list[row];
     switch(col) {
         case 0:
@@ -47,7 +47,6 @@ void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
             body->vel.setY(-value);
             break;
     }
-     ui->graphicsView->scene()->update();
 }
 
 //lineEdit Slots

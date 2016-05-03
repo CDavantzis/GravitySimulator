@@ -15,7 +15,6 @@ MyGraphicsView::MyGraphicsView(QWidget *parent): QGraphicsView(parent), timerId(
     setScene(myScene);
 }
 
-
 void MyGraphicsView::keyPressEvent(QKeyEvent *event){
     switch (event->key()){
     case Qt::Key_Plus:
@@ -32,7 +31,7 @@ void MyGraphicsView::keyPressEvent(QKeyEvent *event){
 void MyGraphicsView::timerEvent(QTimerEvent *event){
     Q_UNUSED(event);
     Body::dT = ElapsedTime.restart()*10000;
-    myScene->step();
+    Body::step();
 }
 
 #ifndef QT_NO_WHEELEVENT

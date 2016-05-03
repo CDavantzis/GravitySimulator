@@ -12,12 +12,12 @@
 
 
 MyGraphicsScene::MyGraphicsScene(QObject* parent, MyGraphicsView*myView): QGraphicsScene(parent), myView(myView){
+    //Setup Scene
     setItemIndexMethod(QGraphicsScene::NoIndex);
     setSceneRect(-4000, -4000, 8000, 8000);
+    //Setup BodyLauncher
     body_launcher = new BodyLauncher();
     this->addItem(body_launcher);
-    calc_pool = new QThreadPool(this);
-    calc_pool->setMaxThreadCount(200);
 }
 
 void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
@@ -53,12 +53,6 @@ void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
     }
 }
 
-void MyGraphicsScene::step(){
-    foreach (Body *body, Body::list)
-        body->getNewPos();
-    foreach (Body *body, Body::list)
-        body->moveToNewPos();
-}
 
 void MyGraphicsScene::addBody(){
     Body *body = new Body();

@@ -15,8 +15,6 @@ class MyGraphicsScene : public QGraphicsScene{
 public:
     MyGraphicsScene( QObject * p = NULL, MyGraphicsView*myView = NULL);
     MyGraphicsView *myView;
-
-    void step();
     QPointF mousePos;
 
 public slots:
@@ -30,7 +28,6 @@ protected:
 
 private:
    BodyLauncher *body_launcher;
-     QThreadPool *calc_pool;
 };
 
 #endif

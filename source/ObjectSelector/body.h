@@ -16,36 +16,35 @@ private:
 
     qreal mass;   //Body mass
     qreal radius; //Body radius
-    void collide(Body *other); //Collide this with other;
     bool exist;
 
-public slots:
-    static void push_back();
-    static void pop_back();
+    void collide(Body *other); //Collide this with other;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value) Q_DECL_OVERRIDE;
 
 public:
     static int  dT;
     static bool canCollide;
-
     static QTableWidget *table;
     static QList<Body*> list;
     static MyGraphicsView *view;
+    static void push_back();
+    static void pop_back();
+    static void step();
+
 
     Body();
-    void Remove();
-
-    QRectF boundingRect() const Q_DECL_OVERRIDE;
-
-    QPointF vel;  //Body velocity (vector);
-    void setMass(qreal mass); //Set body mass;
-    void setRadius(qreal radius);
-    void getNewPos();           //Use bruteforce for N-Body calculations;
-    void moveToNewPos();           //Move body to newPos;
-
+    QRectF  boundingRect() const Q_DECL_OVERRIDE;
     QPointF calcPosChangeFrom(Body *other);
-protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) Q_DECL_OVERRIDE;
+    QPointF vel;  //Body velocity (vector);
+
+    void setMass(qreal mass);
+    void setRadius(qreal radius);
+    void getNewPos();
+    void updatePos();
+    void remove();
+    void updateTable();
+
 
 };
 
