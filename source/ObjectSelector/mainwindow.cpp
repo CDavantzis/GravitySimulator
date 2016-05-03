@@ -1,11 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QFileDialog>
-
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
-    ui->graphicsView->setupTable(ui->tableWidget);
-    //set values to initial .ui conditions
+    Body::table = ui->tableWidget;
+    Body::view  = ui->graphicsView;
+
     Body::canCollide =  ui->checkBox_bodies_collide->isChecked();
 
     ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing,ui->checkBox_antialiasing->checkState());
@@ -13,6 +13,9 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     //Make Connections
     connect(ui->pushButton_randomize, SIGNAL (released()),this->ui->graphicsView, SLOT(shuffle()));
     connect(ui->tableWidget->itemDelegate(), &QAbstractItemDelegate::commitData, this, &OnTblItemsCommitData);
+
+
+
 }
 
 MainWindow::~MainWindow(){
@@ -23,7 +26,7 @@ void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
     int row = ui->tableWidget->currentRow();
     int col = ui->tableWidget->currentColumn();
     double value = (reinterpret_cast<QLineEdit*>(pLineEdit)->text()).toDouble();
-    Body *body = ui->graphicsView->myScene->bodies[row];
+    Body *body = Body::list[row];
     switch(col) {
         case 0:
             body->setMass(value);
@@ -63,10 +66,10 @@ void MainWindow::on_pushButton_stop_clicked(){
 }
 
 void MainWindow::on_pushButton_add_row_clicked(){
-    ui->graphicsView->myScene->addBody();
+    Body::push_back();
 }
 void MainWindow::on_pushButton_remove_row_clicked(){
-    ui->graphicsView->myScene->removeBody();
+    Body::pop_back();
 }
 
 //checkBox Slots

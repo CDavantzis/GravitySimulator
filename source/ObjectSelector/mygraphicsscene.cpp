@@ -10,13 +10,6 @@
 #include <QFuture>
 #include <QtConcurrent/QtConcurrent>
 
-class forceCalculation : public QRunnable{
-private:
-    Body *body;
-public:
-    forceCalculation(Body *body): body(body){}
-    virtual void run(){ body->getNewPos();}
-};
 
 MyGraphicsScene::MyGraphicsScene(QObject* parent, MyGraphicsView*myView): QGraphicsScene(parent), myView(myView){
     setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -61,50 +54,22 @@ void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
 }
 
 void MyGraphicsScene::step(){
-    foreach (Body *body, bodies)
-        calc_pool->start(new forceCalculation(body));
-    calc_pool->waitForDone();
-    foreach (Body *body, bodies)
+    foreach (Body *body, Body::list)
+        body->getNewPos();
+    foreach (Body *body, Body::list)
         body->moveToNewPos();
 }
 
 void MyGraphicsScene::addBody(){
-    int cols = table->columnCount();
-    int rows = table->rowCount();
-    table->insertRow(rows);
-    for (int col = 0; col < cols ; ++col)
-       table->setItem(rows,col,new QTableWidgetItem("0"));
-    Body *body = new Body(this,rows);
-    bodies.append(body);
+    Body *body = new Body();
     addItem(body);
 }
 
 void MyGraphicsScene::addBody(QPointF pos, QPointF vel){
-    int cols = table->columnCount();
-    int rows = table->rowCount();
-    table->insertRow(rows);
-    for (int col = 0; col < cols ; ++col)
-       table->setItem(rows,col,new QTableWidgetItem("0"));
-    Body *body = new Body(this,rows);
+    Body *body = new Body();
     body->setPos(pos);
     body->vel = vel;
-    bodies.append(body);
     addItem(body);
 }
 
-void MyGraphicsScene::removeBody(){
-    //Remove Body
-    int rows = table->rowCount();
-    if (rows){
-        table->removeRow(rows-1);
-        removeItem(bodies.back());
-        bodies.pop_back();
-    }
-}
-void MyGraphicsScene::removeBody(Body *body){
-    int index = bodies.indexOf(body);
-    table->removeRow(index);
-    removeItem(bodies[index]);
-    bodies.removeAt(index);
-    update();
-}
+

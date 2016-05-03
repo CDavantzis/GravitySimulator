@@ -15,10 +15,6 @@ MyGraphicsView::MyGraphicsView(QWidget *parent): QGraphicsView(parent), timerId(
     setScene(myScene);
 }
 
-void MyGraphicsView::setupTable(QTableWidget *table ){
-    this->table = table;
-    this->myScene->table = table;
-}
 
 void MyGraphicsView::keyPressEvent(QKeyEvent *event){
     switch (event->key()){
@@ -64,7 +60,7 @@ void MyGraphicsView::scaleView(qreal scaleFactor)
 void MyGraphicsView::shuffle(){
     int width = this->viewport()->width();
     int height =this->viewport()->height();
-    foreach (Body *body, myScene->bodies) {
+    foreach (Body *body, Body::list) {
         body->setPos(-(width/2) + (qrand() %width), - (height/2) + qrand() % (height)); //Move body to random position
         body->vel = QPointF(0,0); //zero velocity vector
     }

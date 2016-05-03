@@ -16,17 +16,12 @@ public:
     MyGraphicsScene( QObject * p = NULL, MyGraphicsView*myView = NULL);
     MyGraphicsView *myView;
 
-    QList<Body*> bodies;
-    QTableWidget *table;
     void step();
     QPointF mousePos;
 
 public slots:
-
     void addBody();
     void addBody(QPointF pos, QPointF vel);
-    void removeBody();
-    void removeBody(Body *body);
 
 protected:
    void mousePressEvent(QGraphicsSceneMouseEvent *event)   Q_DECL_OVERRIDE;

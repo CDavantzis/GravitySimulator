@@ -6,14 +6,12 @@
 #include <cmath>
 #include <QTime>
 
-class MyGraphicsScene;
+class MyGraphicsView;
 
 class Body : public QGraphicsItem{
 private:
-    int index;
     QPointF newPos;
 
-    MyGraphicsScene *myScene;
     QList<QTableWidgetItem*> table_items;
 
     qreal mass;   //Body mass
@@ -21,11 +19,21 @@ private:
     void collide(Body *other); //Collide this with other;
     bool exist;
 
+public slots:
+    static void push_back();
+    static void pop_back();
+
 public:
     static int  dT;
     static bool canCollide;
 
-    Body(MyGraphicsScene *myScene,int index);
+    static QTableWidget *table;
+    static QList<Body*> list;
+    static MyGraphicsView *view;
+
+    Body();
+    void Remove();
+
     QRectF boundingRect() const Q_DECL_OVERRIDE;
 
     QPointF vel;  //Body velocity (vector);

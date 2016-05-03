@@ -15,12 +15,34 @@ int Body::dT;
 
 static std::mutex m1;
 
-Body::Body(MyGraphicsScene *myScene, int index):myScene(myScene){
-    this->index = index;
-    int column_count = myScene->table->columnCount();
-    for (int i = 0; i < column_count; i++){
-        table_items.append(myScene->table->item(index,i));
+QList<Body*>    Body::list;
+QTableWidget*   Body::table;
+MyGraphicsView* Body::view;
+
+
+void Body::push_back(){
+    Body *body = new Body();
+    view->scene()->addItem(body);
+}
+
+
+void Body::pop_back(){
+    if (table->rowCount() > 0){
+        list.last()->Remove();
     }
+}
+
+Body::Body(){
+    int cols = table->columnCount();
+    int rows = table->rowCount();
+    table->insertRow(rows);
+
+    for (int col = 0; col < cols ; ++col){
+        table->setItem(rows,col,new QTableWidgetItem("0"));
+        table_items.append(table->item(rows,col));
+    }
+
+
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
@@ -30,6 +52,15 @@ Body::Body(MyGraphicsScene *myScene, int index):myScene(myScene){
     setRadius(15);
     vel = QPointF(0,0); //zero velocity vector
     exist = true;
+    list.append(this);
+}
+
+void Body::Remove(){
+
+        int index = list.indexOf(this);
+        table->removeRow(index);
+        list.removeAt(index);
+        this->scene()->removeItem(this);
 }
 
 QRectF Body::boundingRect() const{
@@ -64,7 +95,6 @@ QVariant Body::itemChange(GraphicsItemChange change, const QVariant &value){
         this->table_items[3]->setText(QString::number(-pos().y()));   //Location Y
         this->table_items[4]->setText(QString::number(vel.x()));  //Velocity X
         this->table_items[5]->setText(QString::number(-vel.y())); //Velocity Y
-        //this->update();
     }
     return QGraphicsItem::itemChange(change, value);
 }
@@ -98,13 +128,13 @@ void Body::getNewPos(){
         newPos = pos();
         return;
     }
-    if (myScene->bodies.count() == 1){
+    if (list.count() == 1){
         newPos = pos() - dT*vel;
         return;
     }
     QPointF PosChange = QPointF(0,0); //Position change vector.
-    foreach (Body *other, myScene->bodies)
-        PosChange += calcPosChangeFrom(other);
+    foreach (Body *body, list)
+        PosChange += calcPosChangeFrom(body);
     newPos = pos() - PosChange;
 }
 
@@ -115,7 +145,7 @@ void Body::moveToNewPos(){
         update(); //update everytime to fix collision glitches.
         return;
     }
-    myScene->removeBody(this);
+    this->Remove();
     delete this;
 }
 inline QPointF Body::calcPosChangeFrom(Body *other){

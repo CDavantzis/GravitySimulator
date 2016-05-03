@@ -22,8 +22,6 @@ public:
     QTime ElapsedTime;
     void animate(bool a);
 
-    void setupTable(QTableWidget *table );
-    QTableWidget *table;
 
     bool forceOption_cumulative; //If true velocity force will be cumulative.
     bool forceOption_reverse;    //If true the objects will repel instead of attract.
