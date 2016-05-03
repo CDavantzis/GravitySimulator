@@ -10,9 +10,7 @@
 #include <QtConcurrent/QtConcurrent>
 
 MyGraphicsView::MyGraphicsView(QWidget *parent): QGraphicsView(parent), timerId(0){
-    //Configure GraphWidget Scene
-    myScene = new MyGraphicsScene(this,this);
-    setScene(myScene);
+    setScene(new MyGraphicsScene(this));
 }
 
 void MyGraphicsView::keyPressEvent(QKeyEvent *event){

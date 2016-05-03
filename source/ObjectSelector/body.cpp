@@ -6,14 +6,14 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <cmath>
-#include <mutex>
+
+
 const qreal G = 6.674e-11;
 const qreal PI = 3.14159265359;
 
 bool Body::canCollide;
 int Body::dT;
 
-static std::mutex m1;
 
 QList<Body*>    Body::list;
 QTableWidget*   Body::table;
@@ -23,6 +23,15 @@ void Body::push_back(){
     Body *body = new Body();
     view->scene()->addItem(body);
 }
+
+void Body::push_back(QPointF pos, QPointF vel){
+    Body *body = new Body();
+    body->setPos(pos);
+    body->vel = vel;
+    view->scene()->addItem(body);
+}
+
+
 
 void Body::pop_back(){
     if (table->rowCount() > 0){
@@ -43,7 +52,7 @@ Body::Body(){
     table->insertRow(rows);
     for (int col = 0; col < cols ; ++col){
         table->setItem(rows,col,new QTableWidgetItem("0"));
-        table_items.append(table->item(rows,col));
+        column.append(table->item(rows,col));
     }
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
@@ -58,6 +67,7 @@ Body::Body(){
 }
 
 void Body::remove(){
+
     int index = list.indexOf(this);
     table->removeRow(index);
     list.removeAt(index);
@@ -76,14 +86,14 @@ void Body::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     painter->drawEllipse(QRectF(-radius,-radius,2*radius,2*radius));
 }
 
-void Body::setMass(qreal mass){
-    this->mass = mass;
-    this->table_items[0]->setText(QString::number(mass));
+void Body::setMass(qreal value){
+    mass = value;
+    column[0]->setText(QString::number(value));
 }
 
-void Body::setRadius(qreal radius){
-    this->radius = radius;
-    this->table_items[1]->setText(QString::number(radius));
+void Body::setRadius(qreal value){
+    radius = value;
+    column[1]->setText(QString::number(value));
     update();
 }
 
@@ -154,10 +164,11 @@ inline QPointF Body::calcPosChangeFrom(Body *other){
     return dT*vel;
 }
 
+
 inline void Body::updateTable(){
-    this->table_items[2]->setText(QString::number(pos().x()));    //Location X
-    this->table_items[3]->setText(QString::number(-pos().y()));   //Location Y
-    this->table_items[4]->setText(QString::number(vel.x()));      //Velocity X
-    this->table_items[5]->setText(QString::number(-vel.y()));     //Velocity Y
+    column[2]->setText(QString::number(pos().x()));  //Location X
+    column[3]->setText(QString::number(-pos().y())); //Location Y
+    column[4]->setText(QString::number(vel.x()));    //Velocity X
+    column[5]->setText(QString::number(-vel.y()));   //Velocity Y
 }
 

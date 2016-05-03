@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1031</width>
-    <height>297</height>
+    <height>680</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -105,30 +105,6 @@
        <widget class="QPushButton" name="pushButton_randomize">
         <property name="text">
          <string>Randomize</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Line" name="line_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Graphics:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="checkBox_antialiasing">
-        <property name="text">
-         <string>Antialiasing</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -248,6 +224,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="renderHints">
+        <set>QPainter::HighQualityAntialiasing|QPainter::TextAntialiasing</set>
+       </property>
        <property name="dragMode">
         <enum>QGraphicsView::ScrollHandDrag</enum>
        </property>
@@ -271,7 +250,7 @@
      <x>0</x>
      <y>0</y>
      <width>1031</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="defaultUp">
@@ -286,8 +265,6 @@
     </property>
     <addaction name="actionImport_Objects"/>
     <addaction name="actionSave"/>
-    <addaction name="separator"/>
-    <addaction name="actionSave_Log"/>
    </widget>
    <addaction name="menuAdd_Object"/>
   </widget>
@@ -328,7 +305,6 @@
   <tabstop>pushButton_run</tabstop>
   <tabstop>pushButton_stop</tabstop>
   <tabstop>graphicsView</tabstop>
-  <tabstop>checkBox_antialiasing</tabstop>
  </tabstops>
  <resources/>
  <connections>

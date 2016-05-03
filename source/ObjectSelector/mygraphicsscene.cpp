@@ -11,11 +11,9 @@
 #include <QtConcurrent/QtConcurrent>
 
 
-MyGraphicsScene::MyGraphicsScene(QObject* parent, MyGraphicsView*myView): QGraphicsScene(parent), myView(myView){
-    //Setup Scene
+MyGraphicsScene::MyGraphicsScene(QObject* parent): QGraphicsScene(parent){
     setItemIndexMethod(QGraphicsScene::NoIndex);
     setSceneRect(-4000, -4000, 8000, 8000);
-    //Setup BodyLauncher
     body_launcher = new BodyLauncher();
     this->addItem(body_launcher);
 }
@@ -23,7 +21,7 @@ MyGraphicsScene::MyGraphicsScene(QObject* parent, MyGraphicsView*myView): QGraph
 void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
     switch (event->button()) {
     case Qt::RightButton:
-        body_launcher->grab(event);
+        body_launcher->grab(event->scenePos());
         break;
     default:
         QGraphicsScene::mousePressEvent(event);
@@ -31,39 +29,25 @@ void MyGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
 }
 
 void MyGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event){
-    mousePos = event->scenePos();
     if (body_launcher->isVisible()){
-        body_launcher->stretch(event);
+        body_launcher->stretch(event->scenePos());
+        return;
     }
-    else{
-        QGraphicsScene::mouseMoveEvent(event);
-    }
+    QGraphicsScene::mouseMoveEvent(event);
 }
 
 void MyGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event){
-    QPointF pos;
-    QPointF vel;
     switch (event->button()) {
-    case Qt::RightButton:
-        body_launcher->release(event,pos,vel);
-        addBody(pos,vel);
-        break;
-   default:
-        QGraphicsScene::mousePressEvent(event);
+        case Qt::RightButton:
+            body_launcher->release();
+            break;
+        default:
+            QGraphicsScene::mouseReleaseEvent(event);
     }
 }
 
 
-void MyGraphicsScene::addBody(){
-    Body *body = new Body();
-    addItem(body);
-}
 
-void MyGraphicsScene::addBody(QPointF pos, QPointF vel){
-    Body *body = new Body();
-    body->setPos(pos);
-    body->vel = vel;
-    addItem(body);
-}
+
 
 

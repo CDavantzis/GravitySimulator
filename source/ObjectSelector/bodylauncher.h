@@ -16,9 +16,9 @@ private:
 
 public:
     BodyLauncher();
-    void grab(QGraphicsSceneMouseEvent *event);
-    void stretch(QGraphicsSceneMouseEvent *event);
-    void release(QGraphicsSceneMouseEvent *event, QPointF& pos,  QPointF& vel);
+    void grab(QPointF Pos);
+    void stretch(QPointF Pos);
+    void release();
 };
 
 #endif

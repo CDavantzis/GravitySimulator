@@ -30,7 +30,6 @@ private slots:
     void on_pushButton_remove_row_clicked();
 
     //checkBox Slots
-    void on_checkBox_antialiasing_toggled(bool checked);
     void on_checkBox_bodies_collide_toggled(bool checked);
     void on_actionSave_triggered();
 };

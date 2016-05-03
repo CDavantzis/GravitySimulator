@@ -21,21 +21,21 @@ void BodyLauncher::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QW
     painter->drawEllipse(b);
 }
 
-void BodyLauncher::grab(QGraphicsSceneMouseEvent *event){
+void BodyLauncher::grab(QPointF Pos){
     setVisible(true);
-    start = end = event->scenePos();
+    start = end = Pos;
+    update();
+
+}
+
+void BodyLauncher::stretch(QPointF Pos){
+    end = Pos;
     update();
 }
 
-void BodyLauncher::stretch(QGraphicsSceneMouseEvent *event){
-    end = event->scenePos();
-    update();
-}
-
-void  BodyLauncher::release(QGraphicsSceneMouseEvent *event, QPointF& pos,  QPointF& vel){
+void BodyLauncher::release(){
     setVisible(false);
+    Body::push_back(start,(end-start)*.000000025);
     update();
-    pos = start;
-    vel = (end-start)*.000000025;
 }
 

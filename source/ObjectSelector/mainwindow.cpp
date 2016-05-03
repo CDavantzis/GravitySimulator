@@ -8,7 +8,6 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
 
     Body::canCollide =  ui->checkBox_bodies_collide->isChecked();
 
-    ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing,ui->checkBox_antialiasing->checkState());
 
     //Make Connections
     connect(ui->pushButton_randomize, SIGNAL (released()),this->ui->graphicsView, SLOT(shuffle()));
@@ -49,10 +48,9 @@ void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
     }
 }
 
-//lineEdit Slots
 
-//Start animation
 void MainWindow::on_pushButton_run_clicked(){
+    //Start animation
     ui->graphicsView->animate(true);
     ui->pushButton_run->setEnabled(false);
     ui->pushButton_stop->setEnabled(true);
@@ -63,23 +61,15 @@ void MainWindow::on_pushButton_stop_clicked(){
     ui->pushButton_run->setEnabled(true);
     ui->pushButton_stop->setEnabled(false);
 }
-
 void MainWindow::on_pushButton_add_row_clicked(){
     Body::push_back();
 }
 void MainWindow::on_pushButton_remove_row_clicked(){
     Body::pop_back();
 }
-
-//checkBox Slots
 void MainWindow::on_checkBox_bodies_collide_toggled(bool checked){
     Body::canCollide = checked;
 }
-void MainWindow::on_checkBox_antialiasing_toggled(bool checked){
-    //If true the graphicsview will render in high quality.
-    ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing, checked);
-}
-
 
 
 void MainWindow::on_actionSave_triggered()

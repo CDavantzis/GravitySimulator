@@ -15,8 +15,6 @@ class MyGraphicsView : public QGraphicsView
 
 public:
     MyGraphicsView(QWidget *parent = 0);
-    MyGraphicsScene *myScene;
-    qreal dt;
 
     int timerId;
     QTime ElapsedTime;

@@ -13,13 +13,7 @@ class MyGraphicsView;
 
 class MyGraphicsScene : public QGraphicsScene{
 public:
-    MyGraphicsScene( QObject * p = NULL, MyGraphicsView*myView = NULL);
-    MyGraphicsView *myView;
-    QPointF mousePos;
-
-public slots:
-    void addBody();
-    void addBody(QPointF pos, QPointF vel);
+    MyGraphicsScene(QObject * p = NULL);
 
 protected:
    void mousePressEvent(QGraphicsSceneMouseEvent *event)   Q_DECL_OVERRIDE;
