@@ -69,6 +69,7 @@ void MainWindow::on_pushButton_randomize_clicked(){
 }
 
 void MainWindow::on_actionExportCSV_triggered(){
+    //Export CSV from Table
     QString filename = QFileDialog::getSaveFileName(this, tr("SaveFile"), "C://", "All Files (*.*);;Text Files (*.txt);;Excel Files (*.xlsx *.csv)");
 
     if(!filename.isEmpty()){
@@ -86,5 +87,6 @@ void MainWindow::on_actionExportCSV_triggered(){
 }
 
 void MainWindow::on_actionImportCSV_triggered(){
+    //Import CSV into Table
 
 }
