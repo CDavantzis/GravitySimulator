@@ -41,6 +41,8 @@ public:
     static void push_back(QPointF pos, QPointF vel);
     static void pop_back();
     static void step();
+    static void shuffle();
+
 };
 
 #endif

@@ -1,4 +1,6 @@
 #include "mygraphicsview.h"
+#include "mygraphicsscene.h"
+#include "body.h"
 
 MyGraphicsView::MyGraphicsView(QWidget *parent): QGraphicsView(parent), timerId(0){
     setScene(new MyGraphicsScene(this));
@@ -19,7 +21,7 @@ void MyGraphicsView::keyPressEvent(QKeyEvent *event){
 
 void MyGraphicsView::timerEvent(QTimerEvent *event){
     Q_UNUSED(event);
-    Body::dT = ElapsedTime.restart()*10000;
+    Body::dT = dT.restart()*10000;
     Body::step();
 }
 
@@ -45,14 +47,6 @@ void MyGraphicsView::scaleView(qreal scaleFactor)
     scale(scaleFactor, scaleFactor);
 }
 
-void MyGraphicsView::shuffle(){
-    int width = this->viewport()->width();
-    int height =this->viewport()->height();
-    foreach (Body *body, Body::list) {
-        body->setPos(-(width/2) + (qrand() %width), - (height/2) + qrand() % (height)); //Move body to random position
-        body->vel = QPointF(0,0); //zero velocity vector
-    }
-}
 
 void MyGraphicsView::zoomIn(){
     scaleView(qreal(1.2));
@@ -62,11 +56,11 @@ void MyGraphicsView::zoomOut(){
     scaleView(1 / qreal(1.2));
 }
 
-void MyGraphicsView::animate(bool a){
+void MyGraphicsView::animate(bool a = true){
     // Start and stop animation
     if (a){
         timerId = startTimer(0);
-        ElapsedTime.start();
+        dT.start();
     }
     else{
         killTimer(timerId);

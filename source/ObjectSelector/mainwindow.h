@@ -1,9 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
+#include <QFileDialog>
 #include <QMainWindow>
 #include <QtWidgets/QLineEdit>
-#include "mygraphicsscene.h"
-#include "body.h"
 
 namespace Ui {
     class MainWindow;
@@ -20,17 +20,21 @@ private:
     Ui::MainWindow *ui;
 
 private slots:
-    void OnTblItemsCommitData(QWidget* pLineEdit);
 
-    //pushButton Slots
+    void on_actionExportCSV_triggered();
+    void on_actionImportCSV_triggered();
+
+    void on_checkBox_bodies_collide_toggled(bool checked);
+
     void on_pushButton_run_clicked();
     void on_pushButton_stop_clicked();
     void on_pushButton_add_row_clicked();
     void on_pushButton_remove_row_clicked();
+    void on_pushButton_randomize_clicked();
 
-    //checkBox Slots
-    void on_checkBox_bodies_collide_toggled(bool checked);
-    void on_actionSave_triggered();
+    void on_tableItemsCommitData(QWidget* pLineEdit);
+
+
 };
 
 #endif // MAINWINDOW_H

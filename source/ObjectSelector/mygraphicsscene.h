@@ -3,12 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
-#include <QThread>
-#include <QtConcurrent/QtConcurrent>
-#include <QFuture>
 
-class Body;
-class MyGraphicsView;
 class Launcher;
 
 class MyGraphicsScene : public QGraphicsScene{

@@ -1,40 +1,20 @@
 #ifndef MYGRAPHICSVIEW_H
 #define MYGRAPHICSVIEW_H
 
-#include <QGraphicsView>
-#include <QTableWidget>
 #include <QTime>
-#include "mainwindow.h"
-#include <QThread>
-#include <QtConcurrent/QtConcurrent>
-#include "mygraphicsscene.h"
-#include <math.h>
-#include <QKeyEvent>
-#include <QDebug>
-#include <QTime>
-#include <QThread>
 #include <QFuture>
-#include <QtConcurrent/QtConcurrent>
+#include <QKeyEvent>
+#include <QGraphicsView>
 
-class Body;
-class MyGraphicsView : public QGraphicsView
-{
-    Q_OBJECT
+class MyGraphicsView : public QGraphicsView{
 
 public:
     MyGraphicsView(QWidget *parent = 0);
 
     int timerId;
-    QTime ElapsedTime;
+    QTime dT;
     void animate(bool a);
 
-
-    bool forceOption_cumulative; //If true velocity force will be cumulative.
-    bool forceOption_reverse;    //If true the objects will repel instead of attract.
-    bool bodies_collide;         //If true bodies will merge on collision.
-
-public slots:
-    void shuffle();
     void zoomIn();
     void zoomOut();
 

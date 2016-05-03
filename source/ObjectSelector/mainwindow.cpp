@@ -1,27 +1,20 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QFileDialog>
+#include "body.h"
+
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
     Body::table = ui->tableWidget;
     Body::view  = ui->graphicsView;
-
     Body::canCollide =  ui->checkBox_bodies_collide->isChecked();
-
-
-    //Make Connections
-    connect(ui->pushButton_randomize, SIGNAL (released()),this->ui->graphicsView, SLOT(shuffle()));
-    connect(ui->tableWidget->itemDelegate(), &QAbstractItemDelegate::commitData, this, &OnTblItemsCommitData);
-
-
-
+    connect(ui->tableWidget->itemDelegate(), &QAbstractItemDelegate::commitData, this, &on_tableItemsCommitData);
 }
 
 MainWindow::~MainWindow(){
     delete ui;
 }
 
-void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
+void MainWindow::on_tableItemsCommitData(QWidget* pLineEdit){
     double value = (reinterpret_cast<QLineEdit*>(pLineEdit)->text()).toDouble();
     int row = ui->tableWidget->currentRow();
     int col = ui->tableWidget->currentColumn();
@@ -48,20 +41,19 @@ void MainWindow::OnTblItemsCommitData(QWidget* pLineEdit){
     }
 }
 
-
 void MainWindow::on_pushButton_run_clicked(){
     //Start animation
     ui->graphicsView->animate(true);
     ui->pushButton_run->setEnabled(false);
     ui->pushButton_stop->setEnabled(true);
 }
+
 void MainWindow::on_pushButton_stop_clicked(){
     //Stop animation
     ui->graphicsView->animate(false);
     ui->pushButton_run->setEnabled(true);
     ui->pushButton_stop->setEnabled(false);
 }
-
 
 void MainWindow::on_pushButton_add_row_clicked(){
     Body::push_back();
@@ -72,10 +64,12 @@ void MainWindow::on_pushButton_remove_row_clicked(){
 void MainWindow::on_checkBox_bodies_collide_toggled(bool checked){
     Body::canCollide = checked;
 }
+void MainWindow::on_pushButton_randomize_clicked(){
+    Body::shuffle();
+}
 
 
-void MainWindow::on_actionSave_triggered()
-{
+void MainWindow::on_actionExportCSV_triggered(){
     QString filename = QFileDialog::getSaveFileName(this, tr("SaveFile"), "C://", "All Files (*.*);;Text Files (*.txt);;Excel Files (*.xlsx *.csv)");
 
     if(!filename.isEmpty()){
@@ -90,4 +84,9 @@ void MainWindow::on_actionSave_triggered()
             file.close();
         }
     }
+}
+
+void MainWindow::on_actionImportCSV_triggered()
+{
+
 }

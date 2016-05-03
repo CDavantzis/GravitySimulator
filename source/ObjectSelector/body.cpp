@@ -37,6 +37,16 @@ void Body::step(){
         body->updatePos();
 }
 
+void Body::shuffle(){
+    //Move each body to random position & zero velocity vector;
+    int w = view->viewport()->width();
+    int h = view->viewport()->height();
+    foreach (Body *body, Body::list) {
+        body->setPos(-(w/2)+(qrand()%w),-(h/2)+qrand()%h);
+        body->vel = QPointF(0,0);
+    }
+}
+
 Body::Body(){
     int cols = table->columnCount();
     int rows = table->rowCount();

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1031</width>
-    <height>680</height>
+    <height>296</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -256,8 +256,8 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionImport_Objects"/>
-    <addaction name="actionSave"/>
+    <addaction name="actionImportCSV"/>
+    <addaction name="actionExportCSV"/>
    </widget>
    <addaction name="menuAdd_Object"/>
   </widget>
@@ -269,12 +269,12 @@
     <bool>false</bool>
    </property>
   </widget>
-  <action name="actionImport_Objects">
+  <action name="actionImportCSV">
    <property name="text">
     <string>Import</string>
    </property>
   </action>
-  <action name="actionSave">
+  <action name="actionExportCSV">
    <property name="text">
     <string>Export</string>
    </property>
