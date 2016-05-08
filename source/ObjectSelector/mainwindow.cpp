@@ -72,7 +72,7 @@ void MainWindow::on_actionExportTXT_triggered(){
     //Export TXT file from Table
     QList<QString> list;
     QFileDialog Dialog;
-    Dialog.setDefaultSuffix("csv");
+    Dialog.setDefaultSuffix("txt");
     QString filename = Dialog.getSaveFileName(this, tr("SaveFile"), "C://", "Project File(*.txt)");
     QFile f(filename);
     if (!filename.isEmpty() && (f.open(QFile::WriteOnly | QFile::Truncate)))    {
